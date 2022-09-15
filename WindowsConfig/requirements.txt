@@ -1,0 +1,7 @@
+pyautogui
+Pillow
+opencv-python
+selenium
+notebook
+tensorflow
+matplotlib 
