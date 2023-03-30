@@ -2,12 +2,10 @@ import pymem
 import time
 
 dwLocalPlayer = 0xDC14CC
-dwEntityList = 0x4DDD91C
-dwGlowObjectManager = 0x5326620
+dwEntityList = 0x4DDD93C
+dwGlowObjectManager = 0x5326638
 m_iGlowIndex = 0x10488
 m_iTeamNum = 0xF4
-
-# time.sleep(30) #Убрать контейнер
 
 pm = pymem.Pymem('csgo.exe')
     
