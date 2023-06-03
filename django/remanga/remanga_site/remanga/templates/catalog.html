@@ -1,4 +1,3 @@
-<!-- {% extends "header.html" %} -->
 {% load static %}
 
 <!DOCTYPE html>
@@ -10,6 +9,7 @@
   style="color-scheme: dark"
   class=" "
 >
+  {% block head %}
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -81,7 +81,6 @@
       sizes="16x16"
       href="https://remanga.org/icons/favicon-16x16.png"
     />
-    <link rel="manifest" href="https://remanga.org/site.webmanifest" />
     <link
       rel="mask-icon"
       href="https://remanga.org/icons/safari-pinned-tab.svg"
@@ -90,7 +89,6 @@
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#000" />
     <link rel="shortcut icon" href="https://remanga.org/icons/favicon.ico" />
-    <link rel="manifest" href="https://remanga.org/manifest.json" />
     <script>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
@@ -104,20 +102,6 @@
       })(window, document, "script", "dataLayer", "G-81J4Q19D6Y");
     </script>
     <link rel="preconnect" href="https://api.remanga.org/" />
-    <link
-      rel="preload"
-      href="https://remanga.org/_next/static/media/c16291e054d266ca.p.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="https://remanga.org/_next/static/media/117b353a81c70b49.p.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
     <link
       rel="preload"
       href="{% static 'catalog/4a7d5f9251fa28dc.css' %}"
@@ -602,7 +586,80 @@
         transform: scale(0.95);
       }
     </style>
+    <style type="text/css" data-styled-jsx="">
+      div.jsx-f6904a6ed8e0085:focus {
+        outline: none;
+      }
+      div.jsx-f6904a6ed8e0085 {
+        padding: 0;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -moz-box-orient: vertical;
+        -moz-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background: var(--bg-primary);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        overflow: auto;
+        z-index: 9;
+        position: absolute;
+        background: var(--bg-paper);
+        -webkit-box-shadow: var(--shadow-elevation);
+        -moz-box-shadow: var(--shadow-elevation);
+        box-shadow: var(--shadow-elevation);
+      }
+    </style>
+    <style type="text/css" data-styled-jsx="">
+      div.jsx-2945355907 {
+        top: 47px;
+        left: 0;
+        width: 250px;
+        max-height: 300px;
+      }
+    </style>
+    <style type="text/css" data-styled-jsx="">
+      span.jsx-1b57bf17c694e838 {
+        padding: 8px 16px;
+        cursor: pointer;
+        border-bottom: var(--border);
+        z-index: 1;
+      }
+      span.jsx-1b57bf17c694e838:hover,
+      span.jsx-1b57bf17c694e838:focus {
+        background: var(--bg-highlight);
+        outline: none;
+      }
+      .item-active.jsx-1b57bf17c694e838 {
+        background: var(--bg-highlight);
+      }
+      span.item-selected.jsx-1b57bf17c694e838 {
+        background: var(--primary);
+        color: #fff;
+        border-bottom: var(--border);
+      }
+      span.disabled.jsx-1b57bf17c694e838 {
+        background: var(--bg-primary);
+        color: var(--disabled);
+        cursor: auto;
+      }
+      span.disabled.item-active.jsx-1b57bf17c694e838 {
+        background: none;
+      }
+      span.disabled.item-selected.jsx-1b57bf17c694e838 {
+        background: var(--primary);
+        color: rgba(255, 255, 255, 0.54);
+      }
+    </style>
   </head>
+  {% endblock %}
   <body>
     <noscript
       ><iframe
@@ -613,7 +670,7 @@
       ></iframe
     ></noscript>
     <div id="__next">
-      <!-- {% block header %}{% endblock %} -->
+      {% block header %}
       <header class="Header_header__dv3q5 ui-fixed">
         <nav class="jsx-2a8f39a92d173359 Header_nav__V78KK">
           <div class="jsx-2a8f39a92d173359 Header_navContainer__3fCGy flexAuto">
@@ -623,7 +680,7 @@
               role="button"
               type="button"
               aria-label="Home"
-              href="https://remanga.org/"
+              href="{% url 'remanga:catalog' %}"
               ><span class="Button_label__py8bK"
                 ><svg
                   class="SvgIcon_root__keb_Y SvgIcon_fontSize-large__Xgixi"
@@ -644,7 +701,7 @@
                 class="Button_button__JOS9_ Header_headerLink__EvjUK"
                 tabindex="0"
                 role="button"
-                href="https://remanga.org/manga"
+                href="{% url 'remanga:catalog' %}"
                 >Каталог</a
               ><a
                 class="Button_button__JOS9_ Header_headerLink__EvjUK"
@@ -740,6 +797,7 @@
           </div>
         </nav>
       </header>
+      {% endblock %} {% block body %}
       <main class="jsx-b26231077db42c90 jsx-1886084869">
         <div class="jsx-1025e0387f6b8ad7 slim">
           <div
@@ -770,97 +828,8 @@
           </div>
           <div class="jsx-5da9c2067ceba581 jsx-1899100546 grid-container">
             <div class="flex1 w-full">
-              <div
-                class="jsx-5da9c2067ceba581 jsx-3614142427 grid-container px-3"
-              >
-                <div class="flex items-center flex-nowrap">
-                  <button
-                    class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-size-small__kYaDZ"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span class="Button_label__py8bK"
-                      ><span
-                        class="Button_startIcon__LY2Am Button_icon-size-small__1M4_d"
-                        ><svg
-                          class="SvgIcon_root__keb_Y SvgIcon_fontSize-small__i__5t"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"
-                          ></path></svg></span
-                      >По популярности<span
-                        class="Button_endIcon__n8Bpv Button_icon-size-small__1M4_d"
-                        ><svg
-                          class="SvgIcon_root__keb_Y SvgIcon_fontSize-small__i__5t"
-                          focusable="false"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
-                          ></path></svg></span
-                    ></span></button
-                  ><button
-                    class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-size-small__kYaDZ"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span class="Button_label__py8bK"
-                      ><svg
-                        class="SvgIcon_root__keb_Y SvgIcon_fontSize-small__i__5t"
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
-                        ></path></svg
-                    ></span>
-                  </button>
-                </div>
-                <div class="flex items-center flex-nowrap">
-                  <button
-                    class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb"
-                    tabindex="0"
-                    type="button"
-                    style="margin-left: 6px"
-                  >
-                    <span class="Button_label__py8bK"
-                      ><svg
-                        class="SvgIcon_root__keb_Y SvgIcon_fontSize-small__i__5t"
-                        focusable="false"
-                        viewBox="0 0 448 512"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
-                        ></path></svg
-                    ></span></button
-                  ><button
-                    class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-primary__NSm_C"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span class="Button_label__py8bK"
-                      ><svg
-                        class="SvgIcon_root__keb_Y SvgIcon_fontSize-small__i__5t"
-                        focusable="false"
-                        viewBox="0 0 512 512"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M149.333 56v80c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V56c0-13.255 10.745-24 24-24h101.333c13.255 0 24 10.745 24 24zm181.334 240v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm32-240v80c0 13.255 10.745 24 24 24H488c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24zm-32 80V56c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.256 0 24.001-10.745 24.001-24zm-205.334 56H24c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24zM0 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H24c-13.255 0-24 10.745-24 24zm386.667-56H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zm0 160H488c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H386.667c-13.255 0-24 10.745-24 24v80c0 13.255 10.745 24 24 24zM181.333 376v80c0 13.255 10.745 24 24 24h101.333c13.255 0 24-10.745 24-24v-80c0-13.255-10.745-24-24-24H205.333c-13.255 0-24 10.745-24 24z"
-                        ></path></svg
-                    ></span>
-                  </button>
-                </div>
-              </div>
               <!--$-->
               <div class="grid">
-
                 {% for title in titles_list %}
 
                 <div class="gridItem">
@@ -880,7 +849,9 @@
                           alt="Обложка произведения {{ title.rus_name }}"
                         ></div>
                       </div>
-                      <div class="Vertical_rating__nY5Rc">{{ title.avg_rating }}</div>
+                      <div class="Vertical_rating__nY5Rc">
+                        {{ title.avg_rating }}
+                      </div>
                     </div>
                     <p
                       class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS"
@@ -896,7 +867,7 @@
                 </div>
 
                 {% endfor %}
-                                
+
                 <div class="gridPlaceholder"></div>
                 <div class="gridPlaceholder"></div>
                 <div class="gridPlaceholder"></div>
@@ -1605,33 +1576,6 @@
         </div>
       </footer>
     </div>
-    <script>
-      (function (m, e, t, r, i, k, a) {
-        m[i] =
-          m[i] ||
-          function () {
-            (m[i].a = m[i].a || []).push(arguments);
-          };
-        m[i].l = 1 * new Date();
-        (k = e.createElement(t)),
-          (a = e.getElementsByTagName(t)[0]),
-          (k.async = 1),
-          (k.src = r),
-          a.parentNode.insertBefore(k, a);
-      })(
-        window,
-        document,
-        "script",
-        "https://mc.yandex.ru/metrika/tag.js",
-        "ym"
-      );
-      ym(43900324, "init", {
-        clickmap: true,
-        trackLinks: true,
-        accurateTrackBounce: true,
-        webvisor: true,
-      });
-    </script>
     <noscript
       ><div>
         <img
@@ -1646,6 +1590,21 @@
     <script>
       window.yaContextCb = window.yaContextCb || [];
     </script>
+    <script src="{% static 'catalog/filter_menu.js' %}"></script>
+    <script>
+        function input_click_listener(input_number, data, value_key) {
+          document
+          .querySelectorAll(".jsx-1d2861d85dfb4f6f")[input_number]
+          .addEventListener("click", () => { 
+              new Filter_menu(data, input_number, value_key).create_filter_menu()
+          });
+        }
+        
+        input_click_listener(0, "{{ types_data | escapejs }}", "manga_type")
+        input_click_listener(1, "{{ genres_data | escapejs }}", "name")
+        input_click_listener(2, "{{ categories_data | escapejs }}", "name")
+    </script>
+
     <next-route-announcer
       ><p
         aria-live="assertive"
@@ -1669,3 +1628,4 @@
     >
   </body>
 </html>
+{% endblock %}

@@ -1,7 +1,9 @@
+{% extends "catalog.html" %}
 {% load static %}
 <!DOCTYPE html>
 <!-- saved from url=(0053)https://remanga.org/manga/the_beginning_after_the_end -->
 <html lang="ru" dir="ltr" data-theme="dark" style="color-scheme: dark">
+  {% block head %}
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -840,142 +842,8 @@
       href="https://remanga.org/_next/static/chunks/pages/user/%5Bid%5D/%5B%5B...slug%5D%5D-654a9f0fcf0a459a.js"
     />
   </head>
-  <body>
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=G-81J4Q19D6Y"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <div id="__next">
-      <header class="Header_header__dv3q5 ui-fixed">
-        <nav class="jsx-2a8f39a92d173359 Header_nav__V78KK">
-          <div class="jsx-2a8f39a92d173359 Header_navContainer__3fCGy flexAuto">
-            <a
-              class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb undefined Button_text-size-small__kYaDZ Header_brand__nuOm_"
-              tabindex="0"
-              role="button"
-              type="button"
-              aria-label="Home"
-              href="https://remanga.org/"
-              ><span class="Button_label__py8bK"
-                ><svg
-                  class="SvgIcon_root__keb_Y SvgIcon_fontSize-large__Xgixi"
-                  focusable="false"
-                  viewBox="0 0 496 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 376c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32zm0-128c-53.02 0-96 42.98-96 96s42.98 96 96 96c-106.04 0-192-85.96-192-192S141.96 64 248 64c53.02 0 96 42.98 96 96s-42.98 96-96 96zm0-128c-17.67 0-32 14.33-32 32s14.33 32 32 32 32-14.33 32-32-14.33-32-32-32z"
-                  ></path></svg></span
-            ></a>
-            <div
-              style="max-width: 300px"
-              class="jsx-2a8f39a92d173359 hidden-smDown Header_navContainer__3fCGy ml16"
-            >
-              <a
-                class="Button_button__JOS9_ Header_headerLink__EvjUK"
-                tabindex="0"
-                role="button"
-                href="https://remanga.org/manga"
-                >Каталог</a
-              ><a
-                class="Button_button__JOS9_ Header_headerLink__EvjUK"
-                tabindex="0"
-                role="button"
-                href="https://remanga.org/manga/top"
-                >В топе</a
-              ><a
-                class="Button_button__JOS9_ Header_headerLink__EvjUK hidden-mdDown"
-                tabindex="0"
-                role="button"
-                href="https://remanga.org/search"
-                ><svg
-                  class="SvgIcon_root__keb_Y SvgIcon_fontSize-small__i__5t"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  style="margin-left: -2px; margin-right: 6px"
-                >
-                  <path
-                    d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                  ></path>
-                </svg>
-                Поиск</a
-              >
-            </div>
-          </div>
-          <div class="jsx-2a8f39a92d173359 Header_navContainer__3fCGy"></div>
-          <div
-            class="jsx-2a8f39a92d173359 Header_navContainer__3fCGy justify-end flexAuto"
-          >
-            <div class="hidden-xsDown Header_navContainer__3fCGy">
-              <a
-                class="Button_button__JOS9_ Header_headerLink__EvjUK hidden-mdDown"
-                tabindex="0"
-                role="button"
-                href="https://remanga.org/user/bookmarks"
-                >Закладки</a
-              ><span class="ToggleTheme_root__zESPh"
-                ><span
-                  class="SwitchBase_root__Gf1Ig ToggleTheme_switchBase__Z3tE0 SwitchBase_checked__xUgKd ToggleTheme_checked__u6894"
-                  ><span class="SwitchBase_label__B5UP7"
-                    ><input
-                      class="SwitchBase_input__bhqbg ToggleTheme_input__6EZ3F"
-                      type="checkbox"
-                      value=""
-                      checked="" /><span
-                      class="ToggleTheme_thumb__83UMg"
-                    ></span></span></span
-                ><span class="ToggleTheme_track__CNfKz"
-                  ><svg
-                    class="SvgIcon_root__keb_Y ToggleTheme_icon__jOHrj"
-                    focusable="false"
-                    viewBox="0 0 512 512"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"
-                    ></path></svg
-                  ><svg
-                    class="SvgIcon_root__keb_Y ToggleTheme_icon__jOHrj"
-                    focusable="false"
-                    viewBox="0 0 512 512"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"
-                    ></path></svg></span
-              ></span>
-            </div>
-            <button
-              class="Button_button__JOS9_ Button_button__JOS9_ Button_contained__C0zVd Button_contained-primary__ZtvzA hidden-xsDown"
-              tabindex="0"
-              type="button"
-              style="margin-left: 8px"
-            >
-              <span class="Button_label__py8bK">Войти</span>
-            </button>
-            <div
-              class="Avatar_avatar__ma5lL Avatar_colorDefault__jzBmm jsx-88620ec3676b2b4a hidden-smUp"
-            >
-              <svg
-                class="SvgIcon_root__keb_Y Avatar_fallback__KL121"
-                focusable="false"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                ></path>
-              </svg>
-            </div>
-          </div>
-        </nav>
-      </header>
+  {% endblock %}
+      {% block body %}
       <main class="jsx-b26231077db42c90 jsx-2515649928">
         <script type="application/ld+json">
           [
@@ -3678,7 +3546,6 @@
   `;
       }
     </script>
-
     <next-route-announcer
       ><p
         aria-live="assertive"
@@ -3700,3 +3567,4 @@
     ></next-route-announcer>
   </body>
 </html>
+{% endblock %}
