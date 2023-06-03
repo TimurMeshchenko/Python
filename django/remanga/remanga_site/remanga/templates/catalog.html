@@ -1592,17 +1592,30 @@
     </script>
     <script src="{% static 'catalog/filter_menu.js' %}"></script>
     <script>
-        function input_click_listener(input_number, data, value_key) {
-          document
-          .querySelectorAll(".jsx-1d2861d85dfb4f6f")[input_number]
-          .addEventListener("click", () => { 
-              new Filter_menu(data, input_number, value_key).create_filter_menu()
-          });
-        }
-        
-        input_click_listener(0, "{{ types_data | escapejs }}", "manga_type")
-        input_click_listener(1, "{{ genres_data | escapejs }}", "name")
-        input_click_listener(2, "{{ categories_data | escapejs }}", "name")
+      function input_click_listener(input_number, data, value_key) {
+       // document
+         // .querySelectorAll(".jsx-1d2861d85dfb4f6f")
+         // [input_number].addEventListener("click", () => {
+            new Filter_menu(data, input_number, value_key).create_filter_menu();
+          //});
+      }
+
+      input_click_listener(0, "{{ types_data | escapejs }}", "manga_type");
+      input_click_listener(1, "{{ genres_data | escapejs }}", "name");
+      input_click_listener(2, "{{ categories_data | escapejs }}", "name");
+
+      //function url_updated() {
+      //  if (window.location.href.includes("types")) {
+      //    const myElements = localStorage.getItem("myElements");
+      //    if (myElements) {
+      //      document.querySelectorAll(
+      //        ".jsx-d338f3d1a4c6e9b5.Input_outlined__QwLf6"
+      //      )[0].innerHTML = myElements;
+      //    }
+      //  }
+      //}
+
+      //url_updated();
     </script>
 
     <next-route-announcer
