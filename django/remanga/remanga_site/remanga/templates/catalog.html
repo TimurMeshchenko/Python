@@ -104,32 +104,32 @@
     <link rel="preconnect" href="https://api.remanga.org/" />
     <link
       rel="preload"
-      href="{% static 'catalog/4a7d5f9251fa28dc.css' %}"
+      href="{% static 'catalog/css/4a7d5f9251fa28dc.css' %}"
       as="style"
     />
     <link
       rel="stylesheet"
-      href="{% static 'catalog/4a7d5f9251fa28dc.css' %}"
+      href="{% static 'catalog/css/4a7d5f9251fa28dc.css' %}"
       data-n-g=""
     />
     <link
       rel="preload"
-      href="{% static 'catalog/0c734abce1a29008.css' %}"
+      href="{% static 'catalog/css/0c734abce1a29008.css' %}"
       as="style"
     />
     <link
       rel="stylesheet"
-      href="{% static 'catalog/0c734abce1a29008.css' %}"
+      href="{% static 'catalog/css/0c734abce1a29008.css' %}"
       data-n-p=""
     />
     <link
       rel="preload"
-      href="{% static 'catalog/9eb715df965d6cf8.css' %}"
+      href="{% static 'catalog/css/9eb715df965d6cf8.css' %}"
       as="style"
     />
     <link
       rel="stylesheet"
-      href="{% static 'catalog/9eb715df965d6cf8.css' %}"
+      href="{% static 'catalog/css/9eb715df965d6cf8.css' %}"
       data-n-p=""
     />
     <noscript data-n-css=""></noscript>
@@ -557,7 +557,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{% static 'catalog/a87e1eafaffb2fdc.css' %}"
+      href="{% static 'catalog/css/a87e1eafaffb2fdc.css' %}"
     />
     <style type="text/css" data-styled-jsx="">
       div.jsx-88620ec3676b2b4a {
@@ -656,6 +656,40 @@
       span.disabled.item-selected.jsx-1b57bf17c694e838 {
         background: var(--primary);
         color: rgba(255, 255, 255, 0.54);
+      }
+    </style>
+    <style type="text/css" data-styled-jsx="">
+      .select-option.jsx-9f9056eddaf3b30b {
+        padding: 0 5px;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        line-height: 20px;
+        margin: 1px 2px 1px 0;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+      .select-option.disabled.jsx-9f9056eddaf3b30b {
+        color: var(--disabled);
+      }
+      .select-option-remove.jsx-9f9056eddaf3b30b {
+        cursor: pointer;
+        width: 21px;
+        height: 21px;
+        display: inline-block;
+        text-align: center;
+        margin: 0 -5px 0 0px;
+        -webkit-border-radius: 0 3px 3px 0;
+        -moz-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
+        font-size: 16px;
+      }
+      .select-option-remove.jsx-9f9056eddaf3b30b:hover {
+        color: tomato;
+      }
+      .select-option.jsx-9f9056eddaf3b30b:hover,
+      .select-option.jsx-9f9056eddaf3b30b:hover > span.jsx-9f9056eddaf3b30b {
+        opacity: 0.9;
       }
     </style>
   </head>
@@ -843,9 +877,8 @@
                       >
                         <div
                           class="Image_imgStatic__14_gQ Image_image__HOj0m Image_imgFluid__Men3E Image_lazyLoaded__VDjoe"
-                          style="
-                            background-image: url('https://remanga.org/media/titles/{{ title.img_url }}');
-                          "
+                          style="background-image: url('/media/titles/{{ title.img_url }}');"
+
                           alt="Обложка произведения {{ title.rus_name }}"
                         ></div>
                       </div>
@@ -1590,32 +1623,22 @@
     <script>
       window.yaContextCb = window.yaContextCb || [];
     </script>
-    <script src="{% static 'catalog/filter_menu.js' %}"></script>
+
+    <script src="{% static 'catalog/js/filters/filters.js' %}"></script>
+    <script src="{% static 'catalog/js/filters/drop_menu_filters/drop_menu_filters.js' %}"></script>
+    <script src="{% static 'catalog/js/filters/drop_menu_filters/drop_menu_url_requests.js' %}"></script>
+    <script src="{% static 'catalog/js/filters/drop_menu_filters/drop_menu_stylization.js' %}"></script>
+    <script src="{% static 'catalog/js/filters/input_range_filters/input_range_filters.js' %}"></script>
+    <script src="{% static 'catalog/js/filters/chapters_filters/chapters_filters.js' %}"></script>
+    
     <script>
-      function input_click_listener(input_number, data, value_key) {
-       // document
-         // .querySelectorAll(".jsx-1d2861d85dfb4f6f")
-         // [input_number].addEventListener("click", () => {
-            new Filter_menu(data, input_number, value_key).create_filter_menu();
-          //});
-      }
+      let data_array = [
+      "{{ types_data | escapejs }}", 
+      "{{ genres_data | escapejs }}", 
+      "{{ categories_data | escapejs }}"
+      ]
 
-      input_click_listener(0, "{{ types_data | escapejs }}", "manga_type");
-      input_click_listener(1, "{{ genres_data | escapejs }}", "name");
-      input_click_listener(2, "{{ categories_data | escapejs }}", "name");
-
-      //function url_updated() {
-      //  if (window.location.href.includes("types")) {
-      //    const myElements = localStorage.getItem("myElements");
-      //    if (myElements) {
-      //      document.querySelectorAll(
-      //        ".jsx-d338f3d1a4c6e9b5.Input_outlined__QwLf6"
-      //      )[0].innerHTML = myElements;
-      //    }
-      //  }
-      //}
-
-      //url_updated();
+      new Filters().main(data_array)
     </script>
 
     <next-route-announcer

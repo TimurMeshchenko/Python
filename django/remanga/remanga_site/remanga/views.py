@@ -11,47 +11,10 @@ import json
 class CatalogView(generic.ListView):
     template_name = "catalog.html"
     context_object_name = "titles_list"
-    
-    # def __init__(self, **kwargs: Any):
-    #     self.filters = Q()
-
-    # def get_queryset(self):
-    #     self.titles = Title.objects.order_by("-count_rating")
-    #     self.filtration('types', 'manga_type', None)
-    #     self.filtration('genres', 'genres', Genres.objects.all())
-    #     self.filtration('categories', 'categories', Categories.objects.all())
-    #     return self.titles
-
-    # def filtration(self, request_key, object_value, all_objects):
-    #     if self.request.GET.getlist(request_key):
-    #         if not all_objects:
-    #             all_objects = Title.objects.values(object_value).distinct()
-
-    #         for index in self.request.GET.getlist(request_key):
-    #             index = int(index)
-    #             if len(self.request.GET.getlist(request_key)) == 1:
-    #                 match request_key:
-    #                     case 'types':
-    #                         self.filters &= Q(manga_type=all_objects[index][object_value])
-    #                     case 'genres':
-    #                         self.filters &= Q(genres=all_objects[index])
-    #                     case 'categories':
-    #                         self.filters &= Q(categories=all_objects[index])
-    #             else:
-    #                 match request_key:
-    #                     case 'types':
-    #                         self.filters |= Q(manga_type=all_objects[index][object_value])
-    #                     case 'genres':
-    #                         self.filters |= Q(genres=all_objects[index])
-    #                     case 'categories':
-    #                         self.filters |= Q(categories=all_objects[index])  
-            
-    #         self.titles = self.titles.filter(self.filters).distinct()
-
-
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.filters = Q()
+        self.filter_map = dict()
 
     def get_queryset(self):
         return (
@@ -61,33 +24,59 @@ class CatalogView(generic.ListView):
             .distinct()
         )
 
-    def filtration(self, request_key, object_value, all_objects=None):
+    def filtration(self, request_key, object_type, all_objects=None):
         selected_values = self.request.GET.getlist(request_key)
-        if selected_values:
+        if selected_values != ['']:
             if not all_objects:
-                all_objects = Title.objects.values(object_value).distinct()
+                all_objects = Title.objects.values(object_type).distinct()
+
+            self.filter_map = {
+                'types': lambda value: Q(**{object_type: all_objects[value][object_type]}),
+                'genres': lambda value: Q(**{object_type: all_objects[value]}),
+                'categories': lambda value: Q(**{object_type: all_objects[value]}),
+                'issue_year_gte': lambda value: Q(issue_year__gte=value),
+                'issue_year_lte': lambda value: Q(issue_year__lte=value),
+                'rating_gte': lambda value: Q(avg_rating__gte=value),
+                'rating_lte': lambda value: Q(avg_rating__lte=value),
+                'count_chapters_gte': lambda value: Q(count_chapters__gte=value),
+                'count_chapters_lte': lambda value: Q(count_chapters__lte=value),
+            }
 
             filters = Q()
-            for index in selected_values:
-                index = int(index)
-                if request_key == 'types':
-                    kwargs = {object_value: all_objects[index][object_value]}
-                else:
-                    kwargs = {object_value: all_objects[index]}
-                filters |= Q(**kwargs)
+            for value in selected_values:
+                try:
+                    value = int(value)
+                except ValueError:
+                    value = float(value)
+
+                if request_key in self.filter_map:
+                    filters |= self.filter_map[request_key](value)
+
             self.filters &= filters
 
     def get(self, request, *args, **kwargs):
         self.filtration('types', 'manga_type')
         self.filtration('genres', 'genres', Genres.objects.all())
         self.filtration('categories', 'categories', Categories.objects.all())
+
+        def call_filtration_range(request_key, object_type):
+            self.filtration('{}_gte'.format(request_key), object_type)
+            self.filtration('{}_lte'.format(request_key), object_type)
+
+        call_filtration_range('issue_year','issue_year')
+        call_filtration_range('rating','avg_rating')
+        call_filtration_range('count_chapters','count_chapters')
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["categories_data"] = json.dumps(list(Categories.objects.values())).replace('\'', '\\\'')
-        context["genres_data"] = json.dumps(list(Genres.objects.values())).replace('\'', '\\\'')
-        context["types_data"] = json.dumps(list(Title.objects.values("manga_type").distinct())).replace('\'', '\\\'')
+        
+        def json_dumps(variable, objects_values):
+            context[variable] = json.dumps(list(objects_values)).replace('\'', '\\\'')
+
+        json_dumps("types_data", Title.objects.values("manga_type").distinct())
+        json_dumps("categories_data", Categories.objects.values())
+        json_dumps("genres_data", Genres.objects.values())
         return context
 
 class TitleView(generic.ListView):
@@ -100,7 +89,7 @@ class TitleView(generic.ListView):
 class SearchView(generic.ListView):
     template_name = "search.html"
     def get_queryset(self):
-        return 0
+        return
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["json_data"] = json.dumps(list(Title.objects.values())).replace('\'', '\\\'')
