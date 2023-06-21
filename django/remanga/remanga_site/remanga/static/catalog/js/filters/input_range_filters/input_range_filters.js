@@ -51,6 +51,7 @@ class Input_range_filters {
     this.timer = setTimeout(() => {
       localStorage.setItem("index_clicked_input", this.index_clicked_input);
 
+      console.log(this.url_replaced);
       window.location.search = this.url_replaced;
     }, 700);
   }
@@ -60,12 +61,13 @@ class Input_range_filters {
       if (url_repeats_map[url_param] == undefined) {
         continue;
       }
+
       for (let i = 0; i < new_url_requests_array.length; i++) {
         if (new_url_requests_array[i].includes(url_param)) {
-          new_url_requests_array[i] = new_url_requests_array[i].replace(
-            /\d+/g,
-            url_repeats_map[url_param]
-          );
+          let url_request_name = new_url_requests_array[i].split("=")[0];
+          new_url_requests_array[
+            i
+          ] = `${url_request_name}=${url_repeats_map[url_param]}`;
         }
       }
     }

@@ -55,21 +55,30 @@ class Drop_menu_url_requests {
     }
   }
 
-  delete_label(event, current_index_clicked_element, data_array) {
-    let url_param = ["types", "genres", "categories"][
-      current_index_clicked_element
-    ];
+  delete_label(event, current_index_clicked_element, data_array, url_params) {
     const label_class = ".jsx-9f9056eddaf3b30b";
     const label_text =
       event.target.parentNode.querySelector(label_class).innerText;
 
-    const data = data_array[current_index_clicked_element];
+    const divs_inputs = document.querySelectorAll(".jsx-d338f3d1a4c6e9b5");
+    const count_exclude_filters = 3;
+    const exclude_data_index = divs_inputs.length - count_exclude_filters;
+    let _current_index_clicked_element = current_index_clicked_element;
+
+    if (current_index_clicked_element >= exclude_data_index) {
+      _current_index_clicked_element -= exclude_data_index;
+    }
+
+    const data = data_array[_current_index_clicked_element];
     let value_key = Object.keys(data[0]);
     value_key = value_key[value_key.length - 1];
 
     for (let index_text = 0; index_text < data.length; index_text++) {
       if (data[index_text][value_key] == label_text) {
-        return this.get_url_data([url_param], [index_text]);
+        return this.get_url_data(
+          [url_params[current_index_clicked_element]],
+          [index_text]
+        );
       }
     }
   }

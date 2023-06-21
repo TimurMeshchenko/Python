@@ -3,7 +3,14 @@ class Drop_menu_filters {
 
   create_drop_menu(data_array) {
     this.data_array = data_array;
-    this.url_params = ["types", "genres", "categories"];
+    this.url_params = [
+      "types",
+      "genres",
+      "categories",
+      "exclude_types",
+      "exclude_genres",
+      "exclude_categories"
+    ];
 
     this.json_data_parse();
     this.listen_html();
@@ -105,7 +112,8 @@ class Drop_menu_filters {
     const url_data = new Drop_menu_url_requests().delete_label(
       event,
       current_index_clicked_element,
-      this.data_array
+      this.data_array,
+      this.url_params
     );
 
     this.url_repeats.push(url_data[1]);
@@ -194,8 +202,16 @@ class Drop_menu_filters {
     this.init_vars_elements();
 
     const empty_drop_menu = this.drop_menu_element.innerHTML;
+    
+    const count_exclude_filters = 3;
+    const exclude_data_index = inputs.length - count_exclude_filters;
+    let _index_clicked_element = this.index_clicked_element;
 
-    const data = this.data_array[this.index_clicked_element];
+    if (this.index_clicked_element >= exclude_data_index) {
+      _index_clicked_element -= exclude_data_index;
+    }
+
+    const data = this.data_array[_index_clicked_element];
     let value_key = Object.keys(data[0]);
     value_key = value_key[value_key.length - 1];
 
@@ -285,29 +301,6 @@ class Drop_menu_filters {
 
   restore_drop_menu() {
     if (localStorage.getItem("index_clicked_element") != null) {
-      // СПОСОБ различать блок фильтрации исключений от обычного
-
-      // let div_inputs = document.querySelectorAll(".jsx-d338f3d1a4c6e9b5");
-      // let parent_divs_active = document.activeElement.parentNode.parentNode.parentNode.parentNode;
-      // let filter_title_class = "flex"
-
-      // if(parent_divs_active.previousElementSibling.className.includes(
-      //     filter_title_class
-      //   )) {
-      //     let count_div_first_block = 3
-      //     for (
-      //       let index_div_input = 0;
-      //       index_div_input < count_div_first_block;
-      //       index_div_input++
-      //     ) {
-      //       if(
-      //         div_inputs[index_div_input].innerHTML.includes(
-      //           document.activeElement.outerHTML
-      //         )
-      //       ) {
-      //     };
-      //   }
-      // }
       this.index_clicked_element = localStorage.getItem(
         "index_clicked_element"
       );

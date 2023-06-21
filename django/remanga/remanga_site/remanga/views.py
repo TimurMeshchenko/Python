@@ -11,6 +11,7 @@ import json
 class CatalogView(generic.ListView):
     template_name = "catalog.html"
     context_object_name = "titles_list"
+    
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.filters = Q()
@@ -23,51 +24,67 @@ class CatalogView(generic.ListView):
             .filter(self.filters)
             .distinct()
         )
+    
+    def get(self, request, *args, **kwargs):
+        db_keys_different_request = {
+            'types': 'manga_type',
+            'rating': 'avg_rating'
+        }
 
-    def filtration(self, request_key, object_type, all_objects=None):
-        selected_values = self.request.GET.getlist(request_key)
-        if selected_values != ['']:
-            if not all_objects:
-                all_objects = Title.objects.values(object_type).distinct()
+        different_db_table = {
+            'genres': Genres.objects.all(),
+            'categories': Categories.objects.all()
+        }
 
-            self.filter_map = {
-                'types': lambda value: Q(**{object_type: all_objects[value][object_type]}),
-                'genres': lambda value: Q(**{object_type: all_objects[value]}),
-                'categories': lambda value: Q(**{object_type: all_objects[value]}),
-                'issue_year_gte': lambda value: Q(issue_year__gte=value),
-                'issue_year_lte': lambda value: Q(issue_year__lte=value),
-                'rating_gte': lambda value: Q(avg_rating__gte=value),
-                'rating_lte': lambda value: Q(avg_rating__lte=value),
-                'count_chapters_gte': lambda value: Q(count_chapters__gte=value),
-                'count_chapters_lte': lambda value: Q(count_chapters__lte=value),
-            }
-
-            filters = Q()
-            for value in selected_values:
-                try:
-                    value = int(value)
-                except ValueError:
-                    value = float(value)
-
-                if request_key in self.filter_map:
-                    filters |= self.filter_map[request_key](value)
-
+        for url_param_key in list(request.GET.keys()): 
+            url_param_values = self.request.GET.getlist(url_param_key)
+            
+            if bool(''.join(url_param_values)) == False:
+                continue
+            
+            filters = self.create_url_param_filters(db_keys_different_request, url_param_key, different_db_table)
             self.filters &= filters
 
-    def get(self, request, *args, **kwargs):
-        self.filtration('types', 'manga_type')
-        self.filtration('genres', 'genres', Genres.objects.all())
-        self.filtration('categories', 'categories', Categories.objects.all())
-
-        def call_filtration_range(request_key, object_type):
-            self.filtration('{}_gte'.format(request_key), object_type)
-            self.filtration('{}_lte'.format(request_key), object_type)
-
-        call_filtration_range('issue_year','issue_year')
-        call_filtration_range('rating','avg_rating')
-        call_filtration_range('count_chapters','count_chapters')
         return super().get(request, *args, **kwargs)
 
+    def create_url_param_filters(self, db_keys_different_request, url_param_key, different_db_table):
+        db_keys_request = url_param_key.replace("_gte", "").replace("_lte", "").replace("exclude_", "")
+        db_key = db_keys_request
+        url_param_values = self.request.GET.getlist(url_param_key)        
+        filters = Q()
+        
+        for url_param_value in url_param_values:
+            try:
+                url_param_value = int(url_param_value)
+            except:
+                url_param_value = float(url_param_value)
+
+            if db_keys_request in db_keys_different_request.keys():
+                db_key = db_keys_different_request[db_keys_request]
+
+            if "gte" in url_param_key:
+                filters |= Q(**{"{}__gte".format(db_key): url_param_value})
+            if "lte" in url_param_key:
+                filters |= Q(**{"{}__lte".format(db_key): url_param_value})
+
+            if db_keys_request in ['genres', 'categories']:
+                Q_filter = Q(**{db_keys_request: different_db_table[db_keys_request][url_param_value]})
+                
+                if "exclude" in url_param_key:
+                    filters &= ~Q_filter
+                else:
+                    filters |= Q_filter
+
+            if db_keys_request == "types":
+                Q_filter = Q(**{db_key: Title.objects.values(db_key).distinct()[url_param_value][db_key]})
+
+                if "exclude" in url_param_key:
+                    filters &= ~Q_filter
+                else:
+                    filters |= Q_filter
+
+        return filters
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
@@ -77,7 +94,7 @@ class CatalogView(generic.ListView):
         json_dumps("types_data", Title.objects.values("manga_type").distinct())
         json_dumps("categories_data", Categories.objects.values())
         json_dumps("genres_data", Genres.objects.values())
-        return context
+        return context        
 
 class TitleView(generic.ListView):
     template_name = "title.html"
