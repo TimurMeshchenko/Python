@@ -20,12 +20,16 @@ class Drop_menu_stylization {
       return;
     }
 
-    for (let i = 0; i < url_search.split("&").length; i++) {
-      let url_part = url_search.split("&")[i];
-      const url_part_value = url_part.replace(/\D/g, "");
+    for (let url_part of url_search.split("&")) {
+      const url_part_key = url_part.split("=")[0]; 
+      const url_part_value = url_part.split("=")[1]; 
 
-      if (url_part.includes(url_param)) {
-        all_drop_menu_spans[url_part_value].classList.add("item-selected");
+      if (url_part_key == url_param) {
+        let drop_menu_span = all_drop_menu_spans[url_part_value] 
+        
+        if (drop_menu_span !== undefined) {
+          drop_menu_span.classList.add("item-selected");
+        }
       }
     }
   }

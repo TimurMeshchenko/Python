@@ -51,7 +51,6 @@ class Input_range_filters {
     this.timer = setTimeout(() => {
       localStorage.setItem("index_clicked_input", this.index_clicked_input);
 
-      console.log(this.url_replaced);
       window.location.search = this.url_replaced;
     }, 700);
   }

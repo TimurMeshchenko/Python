@@ -9,7 +9,7 @@ class Drop_menu_filters {
       "categories",
       "exclude_types",
       "exclude_genres",
-      "exclude_categories"
+      "exclude_categories",
     ];
 
     this.json_data_parse();
@@ -118,6 +118,7 @@ class Drop_menu_filters {
 
     this.url_repeats.push(url_data[1]);
     this.url_replaced = url_data[0].join("");
+
     for (let url_repeat of this.url_repeats) {
       this.url_replaced = this.url_replaced.replace(url_repeat, "");
     }
@@ -160,6 +161,10 @@ class Drop_menu_filters {
     if (drop_menu_element) {
       localStorage.setItem("index_clicked_element", index_clicked_element);
       localStorage.setItem("drop_menu_scroll", drop_menu_element.scrollTop);
+      localStorage.setItem(
+        "html_scroll",
+        document.querySelector("html").scrollTop
+      );
     }
   }
 
@@ -202,7 +207,7 @@ class Drop_menu_filters {
     this.init_vars_elements();
 
     const empty_drop_menu = this.drop_menu_element.innerHTML;
-    
+
     const count_exclude_filters = 3;
     const exclude_data_index = inputs.length - count_exclude_filters;
     let _index_clicked_element = this.index_clicked_element;
@@ -214,9 +219,11 @@ class Drop_menu_filters {
     const data = this.data_array[_index_clicked_element];
     let value_key = Object.keys(data[0]);
     value_key = value_key[value_key.length - 1];
+    this.filters_names = Array();
 
     data.map((info) => {
       this.drop_menu_content(info[value_key]);
+      this.filters_names.push(info[value_key]);
     });
 
     this.call_after_show_drop_menu(empty_drop_menu, data, value_key);
@@ -266,10 +273,10 @@ class Drop_menu_filters {
   }
 
   call_url_requests(event) {
-    const all_drop_menu_spans = [
-      ...document.querySelectorAll(".jsx-1b57bf17c694e838"),
-    ];
-    const index_clicked_span = all_drop_menu_spans.indexOf(event.target);
+    const index_clicked_span = this.filters_names.indexOf(
+      event.target.outerText
+    );
+
     this.url_request_keys.push(this.url_params[this.index_clicked_element]);
     this.url_request_values.push(index_clicked_span);
 
@@ -309,12 +316,17 @@ class Drop_menu_filters {
 
       this.show_drop_menu();
 
+      document
+        .querySelector("html")
+        .scrollTo(0, Number(localStorage.getItem("html_scroll")));
+
       this.drop_menu_element.scrollTo(
         0,
         Number(localStorage.getItem("drop_menu_scroll"))
       );
       localStorage.removeItem("index_clicked_element");
       localStorage.removeItem("drop_menu_scroll");
+      localStorage.removeItem("html_scroll");
     }
   }
 }
