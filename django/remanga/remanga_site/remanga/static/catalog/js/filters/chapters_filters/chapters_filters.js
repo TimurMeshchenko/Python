@@ -3,38 +3,52 @@ class Chapters_filters {
     this.url_params = ["count_chapters_gte", "count_chapters_lte"];
     this.param_gte = "count_chapters_gte";
     this.param_lte = "count_chapters_lte";
+
+    const chapters_spans = [...document.querySelectorAll(".Chip_chip__cpsxK")];
+    
+    this.listen_chapters(chapters_spans)
+    this.init_url_chapters_map();
+
+    this.is_not_chapters_selected =
+      !this.url_chapters_map[this.param_gte] &&
+      !this.url_chapters_map[this.param_lte];
+
+    this.color_chapters(chapters_spans);
   }
 
-  listen_chapters() {
-    const chapters_spans = [...document.querySelectorAll(".Chip_chip__cpsxK")];
+  listen_chapters(chapters_spans) {
     this.first_index_chapters_spans = 0;
     this.last_index_chapters_spans = chapters_spans.length - 1;
 
     for (const chapter_span of chapters_spans) {
       chapter_span.addEventListener("click", (event) => {
-        const values = event.target.innerText.split("-");
-        values[0] = values[0].replace(/\D/g, "");
+        const chapters_range = event.target.innerText.split("-");
+        chapters_range[0] = chapters_range[0].replace(/\D/g, "");
         this.index_clicked_chapter = chapters_spans.indexOf(event.target);
-
-        if (this.index_clicked_chapter == this.first_index_chapters_spans) {
-          values.unshift(String());
-        } else {
-          values.push(String());
-        }
-
-        const url_data = new Drop_menu_url_requests().get_url_data(
-          this.url_params,
-          values,
-          false
-        );
-
-        this.change_url(url_data);
+        
+        this.fill_empty_range_value(chapters_range)
+        this.get_url_data_and_change_url(chapters_range)
       });
     }
+  }
 
-    this.init_url_chapters_map();
-    this.init_url_conditions();
-    this.color_chapters(chapters_spans);
+  fill_empty_range_value(chapters_range) {
+    if (this.index_clicked_chapter == this.first_index_chapters_spans) {
+      chapters_range.unshift(String());
+    } else {
+      chapters_range.push(String());
+    }
+  }
+
+  get_url_data_and_change_url(chapters_range) {
+    const have_drop_menu = false;
+    const url_data = new Drop_menu_url_requests().get_url_data(
+      this.url_params,
+      chapters_range,
+      have_drop_menu
+    );
+
+    this.change_url(url_data);
   }
 
   init_url_chapters_map() {
@@ -48,12 +62,6 @@ class Chapters_filters {
     }
   }
 
-  init_url_conditions() {
-    this.empty_url_chapters_values =
-      !this.url_chapters_map[this.param_gte] &&
-      !this.url_chapters_map[this.param_lte];
-  }
-
   color_chapters(chapters_spans) {
     const storage_indices_clicked_chapters = JSON.parse(
       localStorage.getItem("indices_clicked_chapters")
@@ -61,22 +69,27 @@ class Chapters_filters {
     const chapter_class_gray = "Chip_gray__uE26d";
     const chapter_class_blue = "Chip_primary__AHVQ0";
 
-    //  remove_storage_empty_array
-    if (
-      storage_indices_clicked_chapters == null ||
-      !window.location.search.includes(this.param_gte) ||
-      storage_indices_clicked_chapters.length == 0
-    ) {
-      localStorage.removeItem("indices_clicked_chapters");
-      return;
-    }
-    //
+    if (this.remove_empty_storage_clicked_chapters(storage_indices_clicked_chapters))
+      return
 
     for (let index_clicked_chapter of storage_indices_clicked_chapters) {
       chapters_spans[index_clicked_chapter].className = chapters_spans[
         index_clicked_chapter
       ].className.replace(chapter_class_gray, chapter_class_blue);
     }
+  }
+
+  remove_empty_storage_clicked_chapters(storage_indices_clicked_chapters) {
+    if (
+      storage_indices_clicked_chapters == null ||
+      !window.location.search.includes(this.param_gte) ||
+      storage_indices_clicked_chapters.length == 0
+    ) {
+      localStorage.removeItem("indices_clicked_chapters");
+      return true;
+    }
+
+    return false;
   }
 
   change_url(url_data) {
@@ -91,21 +104,20 @@ class Chapters_filters {
     }
 
     this.save_index_clicked_chapter();
-    
-    window.location.search = url_replaced;
+
+    this.timer = setTimeout(() => {
+      window.location.search = url_replaced
+    }, 500);
+
+    // window.location.search = url_replaced;
   }
 
   url_change_value(new_url_requests_array) {
-    if (!window.location.search.includes(this.param_gte)) {
-      return;
-    }
+    const is_not_url_chapters_selected = !window.location.search.includes(this.param_gte) ||
+    this.replace_empty_url_chapters_values(new_url_requests_array);
 
-    // all_chapters_grey
-    if (this.replace_empty_url_chapters_values(new_url_requests_array)) {
-      return;
-    }
-    //
-
+    if (is_not_url_chapters_selected) return;
+  
     this.all_chapter_values = [
       Object.values(this.url_chapters_map),
       Object.values(this.url_repeats_map),
@@ -114,36 +126,39 @@ class Chapters_filters {
       .map(Number);
 
     this.remove_chapters_filters();
-
-    // 0 = ""
-    for (let url_param of this.url_params) {
-      if (this.url_repeats_map[url_param] == 0) {
-        this.url_repeats_map[url_param] = "";
-      }
-      this.replace_old_url_chapter_request(new_url_requests_array, url_param);
-    }
+    this.replace_zero_to_empty_and_update_new_url(new_url_requests_array);
   }
 
   replace_empty_url_chapters_values(new_url_requests_array) {
     const count_chapters_divs = 4;
+    const storage_indices_clicked_chapters = JSON.parse(
+      localStorage.getItem("indices_clicked_chapters")
+    );
 
-    if (this.empty_url_chapters_values) {
-      const storage_indices_clicked_chapters = JSON.parse(
-        localStorage.getItem("indices_clicked_chapters")
+    const is_all_chapters_selected = storage_indices_clicked_chapters != null &&
+    storage_indices_clicked_chapters.length === count_chapters_divs;
+
+    const is_chapters_selected = !this.is_not_chapters_selected || is_all_chapters_selected;
+
+    if (is_chapters_selected) return false;
+
+    for (let url_param of this.url_params) {
+      this.replace_old_url_chapter_request(
+        new_url_requests_array,
+        url_param
       );
+    }
 
-      if (
-        storage_indices_clicked_chapters == null ||
-        storage_indices_clicked_chapters.length !== count_chapters_divs
-      ) {
-        for (let url_param of this.url_params) {
-          this.replace_old_url_chapter_request(
-            new_url_requests_array,
-            url_param
-          );
-        }
+    return true;
+  }
 
-        return true;
+  replace_old_url_chapter_request(new_url_requests_array, url_param) {
+    for (let i = 0; i < new_url_requests_array.length; i++) {
+      if (new_url_requests_array[i].includes(url_param)) {
+        let url_request_name = new_url_requests_array[i].split("=")[0];
+        new_url_requests_array[
+          i
+        ] = `${url_request_name}=${this.url_repeats_map[url_param]}`;
       }
     }
   }
@@ -151,18 +166,17 @@ class Chapters_filters {
   remove_chapters_filters() {
     this.filtered_all_chapter_values = this.all_chapter_values;
     let set_all_chapter_values = [...new Set(this.all_chapter_values)];
+    const is_clicked_to_same_chapters = this.filtered_all_chapter_values.length !== set_all_chapter_values.length;
 
-    if (
-      this.filtered_all_chapter_values.length !== set_all_chapter_values.length
-    ) {
+    if (is_clicked_to_same_chapters) {
       this.remove_dublicates_chapter_values();
       this.cleansing_all_chapter_values();
     } else {
-      this.clicked_in_one();
+      this.clicked_second_or_last_chapter_span()
     }
 
     // init_empty_url_chapters_values
-    if (this.empty_url_chapters_values) {
+    if (this.is_not_chapters_selected) {
       this.filtered_all_chapter_values.unshift(0);
       if (
         this.index_clicked_chapter !== this.first_index_chapters_spans &&
@@ -198,36 +212,34 @@ class Chapters_filters {
 
   cleansing_all_chapter_values() {
     const index_gte_value = 0;
+    const only_chapters_lte_exist = this.index_clicked_chapter == this.last_index_chapters_spans &&
+    Object.values(this.url_chapters_map).lastIndexOf("") == index_gte_value;
 
     if (
-      this.filtered_all_chapter_values == false ||
-      (this.index_clicked_chapter == this.last_index_chapters_spans &&
-        Object.values(this.url_chapters_map).lastIndexOf("") == index_gte_value) // gte not exists lte exists
+      this.filtered_all_chapter_values == false || only_chapters_lte_exist
     ) {
       const no_url_chapters_values = [0, 0];
       this.filtered_all_chapter_values = no_url_chapters_values;
     }
   }
 
-  clicked_in_one() {
+  clicked_second_or_last_chapter_span() {
     const second_index_chapters_spans = 1;
 
     if (
       this.index_clicked_chapter == second_index_chapters_spans ||
       this.index_clicked_chapter == this.last_index_chapters_spans
     ) {
-      this.filtered_all_chapter_values = this.filtered_all_chapter_values.sort(
-        (a, b) => a - b
-      );
-
-      const values_array_half = this.all_chapter_values.length / 2;
-      const url_chapters_map_values = this.all_chapter_values.slice(
-        0,
-        values_array_half
-      );
-
-      this.filtered_all_chapter_values = url_chapters_map_values;
+      this.replace_chapters_values_to_min_gte_and_lte()
     }
+  }
+
+  replace_chapters_values_to_min_gte_and_lte() {
+    const sorted_chapter_values = this.filtered_all_chapter_values.sort(
+      (a, b) => a - b
+    );
+    
+    this.filtered_all_chapter_values = [sorted_chapter_values[0], sorted_chapter_values[1]]
   }
 
   reverse_url_repeats_values() {
@@ -238,7 +250,7 @@ class Chapters_filters {
         this.index_clicked_chapter !== this.last_index_chapters_spans) ||
       (Object.values(this.url_chapters_map).indexOf("") == -1 && //both_chapters_values_exist
         this.index_clicked_chapter == this.last_index_chapters_spans) ||
-      (this.empty_url_chapters_values &&
+      (this.is_not_chapters_selected &&
         this.index_clicked_chapter == this.first_index_chapters_spans)
     ) {
       if (
@@ -258,14 +270,12 @@ class Chapters_filters {
     }
   }
 
-  replace_old_url_chapter_request(new_url_requests_array, url_param) {
-    for (let i = 0; i < new_url_requests_array.length; i++) {
-      if (new_url_requests_array[i].includes(url_param)) {
-        let url_request_name = new_url_requests_array[i].split("=")[0];
-        new_url_requests_array[
-          i
-        ] = `${url_request_name}=${this.url_repeats_map[url_param]}`;
-      }
+  replace_zero_to_empty_and_update_new_url(new_url_requests_array) {
+    for (let url_param of this.url_params) {
+      if (this.url_repeats_map[url_param] == 0)
+        this.url_repeats_map[url_param] = "";
+
+      this.replace_old_url_chapter_request(new_url_requests_array, url_param);
     }
   }
 

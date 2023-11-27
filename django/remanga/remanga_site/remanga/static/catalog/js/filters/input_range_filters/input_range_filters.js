@@ -10,6 +10,8 @@ class Input_range_filters {
     this.url_replaced = Array();
     this.names_clicked_inputs = Array();
     this.input_values = Array();
+
+    this.listen_input_range();
   }
 
   listen_input_range() {
@@ -39,8 +41,8 @@ class Input_range_filters {
     let url_repeats_map = url_data[1];
 
     this.url_change_value(new_url_requests_array, url_repeats_map);
-
     this.url_replaced = new_url_requests_array.join("");
+
     if (!this.url_replaced.includes("?")) {
       this.url_replaced = this.url_replaced.replace("&", "?");
     }
@@ -48,6 +50,7 @@ class Input_range_filters {
     if (this.timer !== undefined) {
       clearTimeout(this.timer);
     }
+
     this.timer = setTimeout(() => {
       localStorage.setItem("index_clicked_input", this.index_clicked_input);
 
@@ -64,9 +67,7 @@ class Input_range_filters {
       for (let i = 0; i < new_url_requests_array.length; i++) {
         if (new_url_requests_array[i].includes(url_param)) {
           let url_request_name = new_url_requests_array[i].split("=")[0];
-          new_url_requests_array[
-            i
-          ] = `${url_request_name}=${url_repeats_map[url_param]}`;
+          new_url_requests_array[i] = `${url_request_name}=${url_repeats_map[url_param]}`;
         }
       }
     }

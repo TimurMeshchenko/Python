@@ -15,7 +15,7 @@ class CatalogView(generic.ListView):
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
         self.filters = Q()
-        self.filter_map = dict()
+        self.current_filters = Q()
 
     def get_queryset(self):
         return (
@@ -26,6 +26,11 @@ class CatalogView(generic.ListView):
         )
     
     def get(self, request, *args, **kwargs):
+        self.update_filters(request)
+
+        return super().get(request, *args, **kwargs)
+
+    def update_filters(self, request):
         db_keys_different_request = {
             'types': 'manga_type',
             'rating': 'avg_rating'
@@ -39,19 +44,16 @@ class CatalogView(generic.ListView):
         for url_param_key in list(request.GET.keys()): 
             url_param_values = self.request.GET.getlist(url_param_key)
             
-            if bool(''.join(url_param_values)) == False:
-                continue
+            if (''.join(url_param_values) == str()): continue
             
-            filters = self.create_url_param_filters(db_keys_different_request, url_param_key, different_db_table)
-            self.filters &= filters
-
-        return super().get(request, *args, **kwargs)
+            self.create_url_param_filters(db_keys_different_request, url_param_key, different_db_table)
+            self.filters &= self.current_filters
 
     def create_url_param_filters(self, db_keys_different_request, url_param_key, different_db_table):
         db_keys_request = url_param_key.replace("_gte", "").replace("_lte", "").replace("exclude_", "")
         db_key = db_keys_request
         url_param_values = self.request.GET.getlist(url_param_key)        
-        filters = Q()
+        self.current_filters = Q()
         
         for url_param_value in url_param_values:
             try:
@@ -62,51 +64,53 @@ class CatalogView(generic.ListView):
             if db_keys_request in db_keys_different_request.keys():
                 db_key = db_keys_different_request[db_keys_request]
 
-            if "gte" in url_param_key:
-                filters |= Q(**{"{}__gte".format(db_key): url_param_value})
-            if "lte" in url_param_key:
-                filters |= Q(**{"{}__lte".format(db_key): url_param_value})
+            self.add_range_filters(url_param_key, db_key, url_param_value)
 
             if db_keys_request in ['genres', 'categories']:
-                Q_filter = Q(**{db_keys_request: different_db_table[db_keys_request][url_param_value]})
-                
-                if "exclude" in url_param_key:
-                    filters &= ~Q_filter
-                else:
-                    filters |= Q_filter
-
+                Q_filter = Q(**{ db_keys_request: different_db_table[db_keys_request][url_param_value] })
+                self.exclude_filter(url_param_key, Q_filter)
+ 
             if db_keys_request == "types":
-                Q_filter = Q(**{db_key: Title.objects.values(db_key).distinct()[url_param_value][db_key]})
+                Q_filter = Q(**{ db_key: Title.objects.values(db_key).distinct()[url_param_value][db_key] })
+                self.exclude_filter(url_param_key, Q_filter)
+    
+    def add_range_filters(self, url_param_key, db_key, url_param_value):
+        for range_argument in ["lte", "gte"]:
+            if range_argument in url_param_key:
+                self.current_filters |= Q(**{f"{db_key}__{range_argument}": url_param_value})
 
-                if "exclude" in url_param_key:
-                    filters &= ~Q_filter
-                else:
-                    filters |= Q_filter
-
-        return filters
+    def exclude_filter(self, url_param_key, Q_filter):
+        if "exclude" in url_param_key:
+            self.current_filters &= ~Q_filter
+        else:
+            self.current_filters |= Q_filter
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        def json_dumps(variable, objects_values):
-            context[variable] = json.dumps(list(objects_values)).replace('\'', '\\\'')
+        self.json_dumps(context, "types_data", Title.objects.values("manga_type").distinct())
+        self.json_dumps(context, "categories_data", Categories.objects.values())
+        self.json_dumps(context, "genres_data", Genres.objects.values())
 
-        json_dumps("types_data", Title.objects.values("manga_type").distinct())
-        json_dumps("categories_data", Categories.objects.values())
-        json_dumps("genres_data", Genres.objects.values())
-        return context        
+        return context   
+    
+    def json_dumps(self, context, variable, objects_values):
+        context[variable] = json.dumps(list(objects_values)).replace('\'', '\\\'')
 
 class TitleView(generic.ListView):
     template_name = "title.html"
     context_object_name = "title"
+    
     def get_queryset(self):
         title_id = self.kwargs.get('dir_name')
         return Title.objects.get(dir_name=title_id)
 
 class SearchView(generic.ListView):
     template_name = "search.html"
+    
     def get_queryset(self):
         return
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["json_data"] = json.dumps(list(Title.objects.values())).replace('\'', '\\\'')

@@ -1,5 +1,7 @@
 class Drop_menu_filters {
-  constructor() {}
+  constructor(data_array) {
+    this.create_drop_menu(data_array)
+  }
 
   create_drop_menu(data_array) {
     this.data_array = data_array;
@@ -57,8 +59,22 @@ class Drop_menu_filters {
   }
 
   determine_location_click(event) {
-    let parent_clicked_element = event.target;
+    const parent_clicked_element = this.get_parent_clicked_element(event.target)
+    const parent_div = [...document.querySelectorAll(".jsx-d338f3d1a4c6e9b5")];
+    const current_index_clicked_element = parent_div.indexOf(
+      parent_clicked_element
+    );
+
+    if (this.is_clicked_another_element_filter(event.target.className)) {
+      return
+    }
+
+    this.location_click_drop_menu(event, current_index_clicked_element);
+  }
+
+  get_parent_clicked_element(target) {
     const drop_menu_span_class = "jsx-9f9056eddaf3b30b";
+    let parent_clicked_element = target;
 
     if (parent_clicked_element.tagName == "INPUT") {
       parent_clicked_element = parent_clicked_element.parentNode.parentNode;
@@ -69,42 +85,43 @@ class Drop_menu_filters {
         parent_clicked_element.parentNode.parentNode.parentNode;
     }
 
-    const parent_div = [...document.querySelectorAll(".jsx-d338f3d1a4c6e9b5")];
-    const current_index_clicked_element = parent_div.indexOf(
-      parent_clicked_element
-    );
+    return parent_clicked_element
+  }
+
+  is_clicked_another_element_filter(element_className) {
+    const input_range_filter_class_name = "Input_input__F9Zao"
+    const chapters_filter_class_name = "Chip_chip__cpsxK"
 
     if (
-      event.target.className == "Input_input__F9Zao" ||
-      event.target.className.includes("Chip_chip__cpsxK")
+      element_className == input_range_filter_class_name ||
+      element_className.includes(chapters_filter_class_name)
     ) {
-      return;
+      return true;
     }
 
-    this.location_click_drop_menu(event, current_index_clicked_element);
+    return false
   }
 
   location_click_drop_menu(event, current_index_clicked_element) {
     if (event.target.innerHTML == "×") {
       this.label_clicked(event, current_index_clicked_element);
-      return;
     }
 
-    if (current_index_clicked_element !== -1) {
+    else if (current_index_clicked_element !== -1) {
       this.index_clicked_element = current_index_clicked_element;
+
       this.init_vars_elements();
       this.check_repeat_click();
-      return;
     }
 
-    if (this.drop_menu_element !== undefined) {
+    else if (this.drop_menu_element !== undefined) {
       if (this.drop_menu_element.innerHTML.includes(event.target.innerHTML)) {
         this.call_url_requests(event);
-        return;
       }
-
-      this.drop_menu_element.remove();
-      this.input.value = String();
+      else {
+        this.drop_menu_element.remove();
+        this.input.value = String();
+      }
     }
   }
 
@@ -187,27 +204,12 @@ class Drop_menu_filters {
 
   show_drop_menu() {
     const inputs = document.querySelectorAll(".jsx-1d2861d85dfb4f6f");
-    for (let input of inputs) {
-      input.value = String();
-    }
 
-    if (this.drop_menu_element) {
-      this.drop_menu_element.remove();
-    }
-
-    this.div_input.innerHTML += `
-      <div
-        tabindex="-1"
-        aria-expanded="true"
-        role="list"
-        class="jsx-f6904a6ed8e0085 jsx-2945355907 select-dropdown"
-      >
-      `;
-
+    this.clear_inputs_and_previous_drop_menu(inputs)
+    this.add_div_filter_options();
     this.init_vars_elements();
 
     const empty_drop_menu = this.drop_menu_element.innerHTML;
-
     const count_exclude_filters = 3;
     const exclude_data_index = inputs.length - count_exclude_filters;
     let _index_clicked_element = this.index_clicked_element;
@@ -229,6 +231,27 @@ class Drop_menu_filters {
     this.call_after_show_drop_menu(empty_drop_menu, data, value_key);
   }
 
+  clear_inputs_and_previous_drop_menu(inputs) {
+    for (let input of inputs) {
+      input.value = String();
+    }
+
+    if (this.drop_menu_element) {
+      this.drop_menu_element.remove();
+    }
+  }
+
+  add_div_filter_options() {
+    this.div_input.innerHTML += `
+      <div
+        tabindex="-1"
+        aria-expanded="true"
+        role="list"
+        class="jsx-f6904a6ed8e0085 jsx-2945355907 select-dropdown"
+      >
+      `;
+  }
+
   drop_menu_content(value) {
     this.drop_menu_element.innerHTML += `
         <span
@@ -248,6 +271,7 @@ class Drop_menu_filters {
     new Drop_menu_stylization().color_clicked_span(
       this.url_params[this.index_clicked_element]
     );
+
     this.search(empty_drop_menu, data, value_key);
     new Drop_menu_stylization().change_drop_menu_height(
       Number(this.index_clicked_element)
@@ -307,26 +331,25 @@ class Drop_menu_filters {
   }
 
   restore_drop_menu() {
-    if (localStorage.getItem("index_clicked_element") != null) {
-      this.index_clicked_element = localStorage.getItem(
-        "index_clicked_element"
-      );
+    if (localStorage.getItem("index_clicked_element") == null) return;
 
-      this.init_vars_elements();
+    this.index_clicked_element = localStorage.getItem(
+      "index_clicked_element"
+    );
 
-      this.show_drop_menu();
+    this.init_vars_elements();
+    this.show_drop_menu();
 
-      document
-        .querySelector("html")
-        .scrollTo(0, Number(localStorage.getItem("html_scroll")));
+    document
+      .querySelector("html")
+      .scrollTo(0, Number(localStorage.getItem("html_scroll")));
 
-      this.drop_menu_element.scrollTo(
-        0,
-        Number(localStorage.getItem("drop_menu_scroll"))
-      );
-      localStorage.removeItem("index_clicked_element");
-      localStorage.removeItem("drop_menu_scroll");
-      localStorage.removeItem("html_scroll");
-    }
+    this.drop_menu_element.scrollTo(
+      0,
+      Number(localStorage.getItem("drop_menu_scroll"))
+    );
+    localStorage.removeItem("index_clicked_element");
+    localStorage.removeItem("drop_menu_scroll");
+    localStorage.removeItem("html_scroll");
   }
 }

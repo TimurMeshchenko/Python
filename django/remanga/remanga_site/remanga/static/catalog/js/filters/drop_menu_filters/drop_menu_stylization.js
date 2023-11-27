@@ -67,35 +67,45 @@ class Drop_menu_stylization {
       return;
     };
 
-    const count_exclude_filters = 3;
-    const exclude_data_index = this.divs_label.length - count_exclude_filters;
-    let _index_url_part_name = this.index_url_part_name;
-
-    if (this.index_url_part_name >= exclude_data_index) {
-      _index_url_part_name -= exclude_data_index;
-    }
-
-    const data = data_array[_index_url_part_name];
-    let value_key = Object.keys(data[0]);
-    value_key = value_key[value_key.length - 1];
-
     const div_label = this.divs_label[this.index_url_part_name];
     const max_count_labels = 6;
     const all_existing_labels = div_label.querySelectorAll(
       `.${this.label_class}`
     );
-
+      
     if (all_existing_labels.length < max_count_labels) {
-      div_label.insertAdjacentHTML(
-        "afterbegin",
-        `
+      const label_name = this.get_label_name(data_array, url_part_value);
+      this.insert_label_html(div_label, label_name)
+    }
+  }
+
+  get_label_name(data_array, url_part_value) {
+    const count_exclude_filters = 3;
+    const exclude_data_index = this.divs_label.length - count_exclude_filters;
+    let total_index_url_part_name = this.index_url_part_name;
+
+    if (this.index_url_part_name >= exclude_data_index) {
+      total_index_url_part_name -= exclude_data_index;
+    }
+
+    const data = data_array[total_index_url_part_name];
+    let value_key = Object.keys(data[0]);
+    value_key = value_key[value_key.length - 1];
+    const label_name = data[url_part_value][value_key];
+
+    return label_name
+  }
+
+  insert_label_html(div_label, label_name) {
+    div_label.insertAdjacentHTML(
+      "afterbegin",
+      `
           <span role="listitem" class="jsx-9f9056eddaf3b30b select-option">
-            <span class="jsx-9f9056eddaf3b30b">${data[url_part_value][value_key]}</span>
+            <span class="jsx-9f9056eddaf3b30b">${label_name}</span>
             <span class="jsx-9f9056eddaf3b30b select-option-remove">×</span>
           </span>
         `
-      );
-    }
+    );
   }
 
   remove_placeholder() {

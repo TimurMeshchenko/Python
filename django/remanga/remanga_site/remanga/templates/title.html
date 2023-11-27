@@ -1,7 +1,6 @@
 {% extends "catalog.html" %}
 {% load static %}
 <!DOCTYPE html>
-<!-- saved from url=(0053)https://remanga.org/manga/the_beginning_after_the_end -->
 <html lang="ru" dir="ltr" data-theme="dark" style="color-scheme: dark">
   {% block head %}
   <head>
@@ -29,7 +28,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ru_RU" />
-    <title>Начало после конца / The Beginning After the End</title>
+    <title>{{ title.rus_name }}</title>
     <meta name="robots" content="index,follow" />
     <meta name="googlebot" content="index,follow" />
     <meta
@@ -44,54 +43,17 @@
       property="og:description"
       content="Король Грей обладает непревзойденной силой, богатством и престижем в мире, управляемом боевыми способностями. Однако одиночество тесно связано с теми, кто об..."
     />
-    <meta
-      property="og:url"
-      content="https://remanga.org/manga/the_beginning_after_the_end"
-    />
-    <meta
-      property="og:image"
-      content="https://api.remanga.org/media/titles/the_beginning_after_the_end/mid_cover.jpg"
-    />
     <meta property="og:image:alt" content="Постер тайтла Начало после конца" />
     <meta property="og:image:width" content="186" />
     <meta property="og:image:height" content="270" />
-    <link
-      rel="canonical"
-      href="https://remanga.org/manga/the_beginning_after_the_end"
-    />
     <meta
       property="keywords"
       content="Читать мангу Начало после конца / The Beginning After the End / 끝이 아닌 시작"
     />
     <meta name="viewport" content="width=device-width" />
     <meta name="next-head-count" content="23" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="https://remanga.org/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="https://remanga.org/icons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="https://remanga.org/icons/favicon-16x16.png"
-    />
-    <link rel="manifest" href="https://remanga.org/site.webmanifest" />
-    <link
-      rel="mask-icon"
-      href="https://remanga.org/icons/safari-pinned-tab.svg"
-      color="#5bbad5"
-    />
     <meta name="msapplication-TileColor" content="#da532c" />
     <meta name="theme-color" content="#000" />
-    <link rel="shortcut icon" href="https://remanga.org/icons/favicon.ico" />
-    <link rel="manifest" href="https://remanga.org/manifest.json" />
     <script>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
@@ -104,21 +66,6 @@
         f.parentNode.insertBefore(j, f);
       })(window, document, "script", "dataLayer", "G-81J4Q19D6Y");
     </script>
-    <link rel="preconnect" href="https://api.remanga.org/" />
-    <link
-      rel="preload"
-      href="https://remanga.org/_next/static/media/c16291e054d266ca.p.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="https://remanga.org/_next/static/media/117b353a81c70b49.p.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
     <link
       rel="preload"
       href="{% static 'title/4a7d5f9251fa28dc.css' %}"
@@ -694,7 +641,7 @@
       .color-primary.jsx-f8919b3175e5971e {
         background-color: var(--primary);
       }
-      .color-secondary: {
+      .color-secondary {
         background-color: var(--secondary);
       }
       .vertical.jsx-f8919b3175e5971e {
@@ -752,7 +699,7 @@
       .positionEnd.jsx-c08a448cf846d669 {
         margin-left: 8px;
       }
-      .disablepointerevents: {
+      .disablepointerevents {
         pointer-events: none;
       }
       .hiddenLabel.jsx-c08a448cf846d669 {
@@ -831,92 +778,10 @@
         border-left: 2px solid #cd7f32;
       }
     </style>
-    <link
-      as="script"
-      rel="prefetch"
-      href="https://remanga.org/_next/static/chunks/103-4e846459f90b5278.js"
-    />
-    <link
-      as="script"
-      rel="prefetch"
-      href="https://remanga.org/_next/static/chunks/pages/user/%5Bid%5D/%5B%5B...slug%5D%5D-654a9f0fcf0a459a.js"
-    />
   </head>
   {% endblock %}
       {% block body %}
       <main class="jsx-b26231077db42c90 jsx-2515649928">
-        <script type="application/ld+json">
-          [
-            {
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              "itemListElement": [
-                {
-                  "@type": "ListItem",
-                  "position": 1,
-                  "name": "Каталог",
-                  "item": "https://remanga.org/manga"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 2,
-                  "name": "Западный комикс",
-                  "item": "https://remanga.org/manga?types=3"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 3,
-                  "name": "Начало после конца",
-                  "item": "https://remanga.org/manga/the_beginning_after_the_end"
-                }
-              ]
-            },
-            {
-              "@context": "https://schema.org",
-              "@type": "CreativeWorkSeries",
-              "url": "https://remanga.org/manga/the_beginning_after_the_end",
-              "name": "Западный комикс Начало после конца",
-              "headline": "Начало после конца",
-              "alternativeHeadline": [
-                "The Beginning After the End",
-                "끝이 아닌 시작"
-              ],
-              "image": "https://api.remanga.org/media/titles/the_beginning_after_the_end/mid_cover.jpg",
-              "keywords": "Читать мангу Начало после конца / The Beginning After the End / 끝이 아닌 시작",
-              "aggregateRating": {
-                "@context": "https://schema.org",
-                "@type": "AggregateRating",
-                "ratingValue": "9.3",
-                "ratingCount": 27170,
-                "worstRating": 1,
-                "bestRating": 10
-              },
-              "description": "Король Грей обладает непревзойденной силой, богатством и престижем в мире, управляемом боевыми способностями. Однако одиночество тесно связано с теми, кто обладает большой властью. Под гламурной внешностью могущественного короля скрывается оболочка человека, лишенного целей&amp;nbsp;и воли.\r\n\r\nПеревоплотившись в новом&amp;nbsp;мире, наполненном&amp;nbsp;магией и монстрами, король получает второй шанс вновь прожить свою жизнь. Однако исправление ошибок прошлого будет не единственной его задачей. Под миром и процветанием нового мира скрывается подводное течение, угрожающее разрушить все, ради чего он работал, подвергая сомнению его роль и причину рождения заново.",
-              "inLanguage": "Russian",
-              "typicalAgeRange": "16+",
-              "copyrightYear": 2018,
-              "genre": [
-                "Экшен",
-                "Приключения",
-                "Трагедия",
-                "Фэнтези",
-                "Веб",
-                "В цвете",
-                "Реинкарнация",
-                "Магия",
-                "Монстры",
-                "Боги",
-                "Воспоминания из другого мира",
-                "ГГ мужчина",
-                "Жестокий мир",
-                "Животные компаньоны",
-                "Магическая академия",
-                "Месть",
-                "Навыки"
-              ]
-            }
-          ]
-        </script>
         <div
           itemscope=""
           itemtype="https://schema.org/CreativeWorkSeries"
@@ -961,15 +826,7 @@
                       />
                     </div>
                     <div class="jsx-525f9ca96b40a0e6 buttons">
-                      <a
-                        class="Button_button__JOS9_ Button_button__JOS9_ Button_contained__C0zVd Button_contained-primary__ZtvzA Button_fullWidth__iQYat"
-                        tabindex="0"
-                        role="button"
-                        type="button"
-                        style="font-weight: 600; border-radius: 8px"
-                        href="https://remanga.org/manga/the_beginning_after_the_end/59059"
-                        ><span class="Button_label__py8bK">Читать</span></a
-                      ><button
+                      <button
                         class="Button_button__JOS9_ Button_button__JOS9_ Button_contained__C0zVd Button_contained-primary__ZtvzA Button_fullWidth__iQYat"
                         tabindex="0"
                         type="button"
@@ -994,27 +851,7 @@
                                 d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
                               ></path></svg></span
                         ></span></button
-                      ><button
-                        class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-size-small__kYaDZ"
-                        tabindex="0"
-                        type="button"
-                        style="color:var(--text-secondary"
                       >
-                        <span class="Button_label__py8bK"
-                          ><span
-                            class="Button_startIcon__LY2Am Button_icon-size-small__1M4_d"
-                            ><svg
-                              class="SvgIcon_root__keb_Y"
-                              focusable="false"
-                              viewBox="0 0 24 24"
-                              aria-hidden="true"
-                            >
-                              <path
-                                d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM12 17.3c-.72 0-1.3-.58-1.3-1.3 0-.72.58-1.3 1.3-1.3.72 0 1.3.58 1.3 1.3 0 .72-.58 1.3-1.3 1.3zm1-4.3h-2V7h2v6z"
-                              ></path></svg></span
-                          >Пожаловаться</span
-                        >
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -1204,10 +1041,10 @@
                         <a
                           class="Chip_chip__cpsxK Chip_gray__uE26d"
                           title="Манга жанра {{ genre }}"
-                          href="https://remanga.org/manga?page=1&amp;genres=2"
+                          href=""
                           ><span
                             itemprop="genre"
-                            data-previewurl="https://remanga.org/manga?page=1&amp;genres=2"
+                            data-previewurl=""
                             >{{ genre }}</span
                           ></a
                         >
@@ -1215,10 +1052,10 @@
                         <a
                           class="Chip_chip__cpsxK Chip_gray__uE26d"
                           title="Манга жанра {{ category }}"
-                          href="https://remanga.org/manga?page=1&amp;genres=2"
+                          href=""
                           ><span
                             itemprop="genre"
-                            data-previewurl="https://remanga.org/manga?page=1&amp;genres=2"
+                            data-previewurl=""
                             >{{ category }}</span
                           ></a
                         >
@@ -1338,7 +1175,7 @@
                             class="jsx-a1b2d119e625548b Comments_wrap__7NbKY"
                           >
                             <div class="jsx-3914328852 Comments_media__5h5tS">
-                              <a href="https://remanga.org/user/267534"
+                              <a href=""
                                 ><img
                                   src="{% static 'images/title/avatar.jpg' %}"
                                   alt="..."
@@ -3274,197 +3111,6 @@
         </div>
       </main>
       <footer class="Footer_footer__aYlrA">
-        <div
-          class="jsx-1025e0387f6b8ad7 jsx-5da9c2067ceba581 jsx-3243961146 grid-container Footer_grid__TxLoD slim"
-        >
-          <div
-            class="jsx-7324287667afa997 jsx-1458226471 Footer_fr__ZSHv7 grid-item"
-          >
-            <a title="ReManga" href="https://remanga.org/"
-              ><h4 class="Typography_h4__1eVxk mb16">ReManga</h4></a
-            >
-            <p
-              class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_gutterBottom__mjtdd"
-            >
-              Мы всегда готовы ответить на ваши вопросы!
-            </p>
-            <a
-              href="https://vk.com/im?sel=-185404064"
-              class="hoverLink"
-              title="Задать вопрос"
-              >Задать вопрос</a
-            >
-          </div>
-          <div
-            class="jsx-7324287667afa997 jsx-1458226471 Footer_fp__r_uSG grid-item"
-          >
-            <div class="Footer_collapseHeader___JxXI">
-              <h4 class="Typography_h6__crs2H">РАЗДЕЛЫ</h4>
-              <svg
-                class="SvgIcon_root__keb_Y Footer_collapseIcon__z92dX"
-                focusable="false"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path>
-              </svg>
-            </div>
-            <div style="height: auto; overflow: initial" aria-hidden="false">
-              <div class="Footer_collapseContent__WfCBb">
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a title="ПРАВИЛА САЙТА" href="https://remanga.org/rules"
-                    >ПРАВИЛА САЙТА</a
-                  >
-                </p>
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a title="DMCA" href="https://remanga.org/dmca">DMCA</a>
-                </p>
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a
-                    title="АВТОРСКОЕ ПРАВО"
-                    href="https://remanga.org/copyright"
-                    >АВТОРСКОЕ ПРАВО</a
-                  >
-                </p>
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a title="О НАС" href="https://remanga.org/about-us">О НАС</a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            class="jsx-7324287667afa997 jsx-1458226471 Footer_fi__sfK8u grid-item"
-          >
-            <div class="Footer_collapseHeader___JxXI">
-              <h4 class="Typography_h6__crs2H">ИНФО</h4>
-              <svg
-                class="SvgIcon_root__keb_Y Footer_collapseIcon__z92dX"
-                focusable="false"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"></path>
-              </svg>
-            </div>
-            <div style="height: auto; overflow: initial" aria-hidden="false">
-              <div class="Footer_collapseContent__WfCBb">
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a
-                    title="ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ"
-                    href="https://remanga.org/terms-of-use"
-                    >ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a
-                  >
-                </p>
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a
-                    title="АГЕНТСКИЙ ДОГОВОР"
-                    href="https://remanga.org/agency-contract"
-                    >АГЕНТСКИЙ ДОГОВОР</a
-                  >
-                </p>
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a
-                    title="СОГЛАШЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ"
-                    href="https://remanga.org/confidentiality-agreement"
-                    >СОГЛАШЕНИЕ О КОНФИДЕНЦИАЛЬНОСТИ</a
-                  >
-                </p>
-                <p
-                  class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4 hoverLink"
-                >
-                  <a title="FAQ" href="https://remanga.org/faq">FAQ</a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            class="jsx-7324287667afa997 jsx-1458226471 Footer_fs__3uz3G grid-item"
-          >
-            <h4 class="Typography_h6__crs2H mb16">КОНТАКТЫ</h4>
-            <div class="Footer_socials__ST7y_">
-              <a
-                title="vkontakte"
-                target="_blank"
-                href="https://vk.com/remanga"
-                rel="noopener noreferrer"
-                ><svg
-                  class="SvgIcon_root__keb_Y"
-                  focusable="false"
-                  viewBox="0 0 576 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M545 117.7c3.7-12.5 0-21.7-17.8-21.7h-58.9c-15 0-21.9 7.9-25.6 16.7 0 0-30 73.1-72.4 120.5-13.7 13.7-20 18.1-27.5 18.1-3.7 0-9.4-4.4-9.4-16.9V117.7c0-15-4.2-21.7-16.6-21.7h-92.6c-9.4 0-15 7-15 13.5 0 14.2 21.2 17.5 23.4 57.5v86.8c0 19-3.4 22.5-10.9 22.5-20 0-68.6-73.4-97.4-157.4-5.8-16.3-11.5-22.9-26.6-22.9H38.8c-16.8 0-20.2 7.9-20.2 16.7 0 15.6 20 93.1 93.1 195.5C160.4 378.1 229 416 291.4 416c37.5 0 42.1-8.4 42.1-22.9 0-66.8-3.4-73.1 15.4-73.1 8.7 0 23.7 4.4 58.7 38.1 40 40 46.6 57.9 69 57.9h58.9c16.8 0 25.3-8.4 20.4-25-11.2-34.9-86.9-106.7-90.3-111.5-8.7-11.2-6.2-16.2 0-26.2.1-.1 72-101.3 79.4-135.6z"
-                  ></path></svg></a
-              ><a
-                title="discord"
-                target="_blank"
-                href="https://discord.com/invite/wWMnsSw"
-                rel="noopener noreferrer"
-                ><svg
-                  class="SvgIcon_root__keb_Y"
-                  focusable="false"
-                  viewBox="0 0 448 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M297.216 243.2c0 15.616-11.52 28.416-26.112 28.416-14.336 0-26.112-12.8-26.112-28.416s11.52-28.416 26.112-28.416c14.592 0 26.112 12.8 26.112 28.416zm-119.552-28.416c-14.592 0-26.112 12.8-26.112 28.416s11.776 28.416 26.112 28.416c14.592 0 26.112-12.8 26.112-28.416.256-15.616-11.52-28.416-26.112-28.416zM448 52.736V512c-64.494-56.994-43.868-38.128-118.784-107.776l13.568 47.36H52.48C23.552 451.584 0 428.032 0 398.848V52.736C0 23.552 23.552 0 52.48 0h343.04C424.448 0 448 23.552 448 52.736zm-72.96 242.688c0-82.432-36.864-149.248-36.864-149.248-36.864-27.648-71.936-26.88-71.936-26.88l-3.584 4.096c43.52 13.312 63.744 32.512 63.744 32.512-60.811-33.329-132.244-33.335-191.232-7.424-9.472 4.352-15.104 7.424-15.104 7.424s21.248-20.224 67.328-33.536l-2.56-3.072s-35.072-.768-71.936 26.88c0 0-36.864 66.816-36.864 149.248 0 0 21.504 37.12 78.08 38.912 0 0 9.472-11.52 17.152-21.248-32.512-9.728-44.8-30.208-44.8-30.208 3.766 2.636 9.976 6.053 10.496 6.4 43.21 24.198 104.588 32.126 159.744 8.96 8.96-3.328 18.944-8.192 29.44-15.104 0 0-12.8 20.992-46.336 30.464 7.68 9.728 16.896 20.736 16.896 20.736 56.576-1.792 78.336-38.912 78.336-38.912z"
-                  ></path></svg></a
-              ><a
-                title="telegram"
-                target="_blank"
-                href="https://t.me/Remanga"
-                rel="noopener noreferrer"
-                ><svg
-                  class="SvgIcon_root__keb_Y"
-                  focusable="false"
-                  viewBox="0 0 496 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142 89.4-61.2-19.1c-13.3-4.2-13.6-13.3 2.8-19.7l239.1-92.2c11.1-4 20.8 2.7 17.2 19.5z"
-                  ></path></svg></a
-              ><a
-                title="tiktok"
-                target="_blank"
-                href="https://www.tiktok.com/@remanga"
-                rel="noopener noreferrer"
-                ><svg
-                  class="SvgIcon_root__keb_Y"
-                  focusable="false"
-                  viewBox="0 0 448 512"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"
-                  ></path></svg
-              ></a>
-            </div>
-            <p
-              class="Typography_caption__yY5RL Typography_color-textSecondary__gCJWS Typography_paragraph__f4zP4"
-            >
-              remanga.org ©<!-- -->
-              <!-- -->2023
-            </p>
-          </div>
-        </div>
       </footer>
     </div>
     <script id="__NEXT_DATA__" type="application/json">
@@ -3525,25 +3171,25 @@
 
       function chapter_switch() {
         document.querySelector(".px-4.py-2").innerHTML = `  
-  <div class="Chapters_container__G5BYo">
-    <div class="Chapters_container__G5BYo">
-      {% for chapter in title.chapters.all %}
-      <div class="Chapters_chapterItem__z8nrU flex items-center">
-        <span class="Chapters_tome__VAir6">{{ chapter.tome }}</span
-        ><a
-          class="Chapters_content__lYYd5 flex items-center"
-          href="/manga/the_beginning_after_the_end/721795"
-          ><p
-            class="Typography_body1__TZSwE Typography_color-inherit__bgLyK Chapters_title__Jsy0U"
-          >
-            Глава {{ chapter.chapter }} 
-          </p>
-        </a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-  `;
+          <div class="Chapters_container__G5BYo">
+            <div class="Chapters_container__G5BYo">
+              {% for chapter in title.chapters.all %}
+              <div class="Chapters_chapterItem__z8nrU flex items-center">
+                <span class="Chapters_tome__VAir6">{{ chapter.tome }}</span
+                ><a
+                  class="Chapters_content__lYYd5 flex items-center"
+                  href="/manga/the_beginning_after_the_end/721795"
+                  ><p
+                    class="Typography_body1__TZSwE Typography_color-inherit__bgLyK Chapters_title__Jsy0U"
+                  >
+                    Глава {{ chapter.chapter }} 
+                  </p>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        `;
       }
     </script>
     <next-route-announcer

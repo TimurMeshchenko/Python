@@ -2,19 +2,23 @@ from django.db import models
 
 class Genres(models.Model):
     name = models.CharField(max_length=100, default='')
+   
     def __str__(self):
         return self.name
 
 class Categories(models.Model):
     name = models.CharField(max_length=100, default='')
+    
     def __str__(self):
         return self.name
 
 class Chapters(models.Model):
     chapter = models.IntegerField(default=0)
     tome = models.IntegerField(default=0)
+    
     class Meta:
         ordering = ['-tome', '-chapter']
+
     def __str__(self):
         return self.chapter
     
@@ -34,5 +38,6 @@ class Title(models.Model):
     categories = models.ManyToManyField(Categories)
     genres = models.ManyToManyField(Genres)
     chapters = models.ManyToManyField(Chapters)
+
     def __str__(self):
         return self.rus_name
