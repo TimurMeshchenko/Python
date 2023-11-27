@@ -105,11 +105,7 @@ class Chapters_filters {
 
     this.save_index_clicked_chapter();
 
-    this.timer = setTimeout(() => {
-      window.location.search = url_replaced
-    }, 500);
-
-    // window.location.search = url_replaced;
+    window.location.search = url_replaced;
   }
 
   url_change_value(new_url_requests_array) {
@@ -170,22 +166,12 @@ class Chapters_filters {
 
     if (is_clicked_to_same_chapters) {
       this.remove_dublicates_chapter_values();
-      this.cleansing_all_chapter_values();
+      this.clear_all_chapter_values_gte_empty();
     } else {
       this.clicked_second_or_last_chapter_span()
     }
 
-    // init_empty_url_chapters_values
-    if (this.is_not_chapters_selected) {
-      this.filtered_all_chapter_values.unshift(0);
-      if (
-        this.index_clicked_chapter !== this.first_index_chapters_spans &&
-        this.index_clicked_chapter !== this.last_index_chapters_spans
-      ) {
-        this.filtered_all_chapter_values.pop();
-      }
-    }
-    //
+    this.add_gte_or_lte_for_empty_url_chapters()
 
     this.url_repeats_map[this.param_gte] = Math.min(
       ...this.filtered_all_chapter_values
@@ -193,6 +179,7 @@ class Chapters_filters {
     this.url_repeats_map[this.param_lte] = Math.max(
       ...this.filtered_all_chapter_values
     );
+
     this.reverse_url_repeats_values();
   }
 
@@ -210,17 +197,20 @@ class Chapters_filters {
     }
   }
 
-  cleansing_all_chapter_values() {
+  clear_all_chapter_values_gte_empty() {
     const index_gte_value = 0;
-    const only_chapters_lte_exist = this.index_clicked_chapter == this.last_index_chapters_spans &&
-    Object.values(this.url_chapters_map).lastIndexOf("") == index_gte_value;
+    const is_clicked_last_chapter = this.index_clicked_chapter == this.last_index_chapters_spans;
+    const only_chapters_lte_exist = Object.values(this.url_chapters_map).lastIndexOf("") == index_gte_value;
 
     if (
-      this.filtered_all_chapter_values == false || only_chapters_lte_exist
+      this.filtered_all_chapter_values == false || is_clicked_last_chapter && only_chapters_lte_exist
     ) {
-      const no_url_chapters_values = [0, 0];
-      this.filtered_all_chapter_values = no_url_chapters_values;
+      this.clear_all_chapter_values()
     }
+  }
+
+  clear_all_chapter_values() {
+    this.filtered_all_chapter_values = [0, 0];
   }
 
   clicked_second_or_last_chapter_span() {
@@ -242,23 +232,31 @@ class Chapters_filters {
     this.filtered_all_chapter_values = [sorted_chapter_values[0], sorted_chapter_values[1]]
   }
 
+  add_gte_or_lte_for_empty_url_chapters() {
+    if (this.is_not_chapters_selected) {
+      this.filtered_all_chapter_values.unshift(0);
+
+      if (
+        this.index_clicked_chapter !== this.first_index_chapters_spans &&
+        this.index_clicked_chapter !== this.last_index_chapters_spans
+      ) {
+        this.filtered_all_chapter_values.pop();
+      }
+    }
+  }
+
   reverse_url_repeats_values() {
     const index_lte_value = 1;
+    const first_empty_chapters_index = Object.values(this.url_chapters_map).indexOf("");
+    
+    const is_only_gte_exist = first_empty_chapters_index == index_lte_value;
+    const is_first_chapter_clicked = this.index_clicked_chapter == this.first_index_chapters_spans;
 
-    if (
-      (Object.values(this.url_chapters_map).indexOf("") == index_lte_value && //gte exists lte not
-        this.index_clicked_chapter !== this.last_index_chapters_spans) ||
-      (Object.values(this.url_chapters_map).indexOf("") == -1 && //both_chapters_values_exist
-        this.index_clicked_chapter == this.last_index_chapters_spans) ||
-      (this.is_not_chapters_selected &&
-        this.index_clicked_chapter == this.first_index_chapters_spans)
-    ) {
-      if (
-        Object.values(this.url_chapters_map).indexOf("") == index_lte_value &&
-        this.index_clicked_chapter == this.first_index_chapters_spans
-      ) {
-        const no_url_chapters_values = [0, 0];
-        this.filtered_all_chapter_values = no_url_chapters_values;
+    if (this.is_need_to_clean_lte()) {
+      const all_chapters_selected = is_only_gte_exist && is_first_chapter_clicked;
+     
+      if (all_chapters_selected) {
+        this.clear_all_chapter_values()
       }
 
       this.url_repeats_map[this.param_lte] = Math.min(
@@ -268,6 +266,22 @@ class Chapters_filters {
         ...this.filtered_all_chapter_values
       );
     }
+  }
+
+  is_need_to_clean_lte() {
+    const index_lte_value = 1;
+    const first_empty_chapters_index = Object.values(this.url_chapters_map).indexOf("");
+    const is_only_gte_exist = first_empty_chapters_index == index_lte_value;
+   
+    const is_first_chapter_clicked = this.index_clicked_chapter == this.first_index_chapters_spans;
+    const is_both_chapters_values_exist = first_empty_chapters_index == -1;
+    const is_last_chapter_clicked = this.index_clicked_chapter == this.last_index_chapters_spans;
+
+    const is_need_to_clean_lte = (is_only_gte_exist && !is_last_chapter_clicked) ||
+      (is_both_chapters_values_exist && is_last_chapter_clicked) ||
+      (this.is_not_chapters_selected && is_first_chapter_clicked)
+    
+    return is_need_to_clean_lte;
   }
 
   replace_zero_to_empty_and_update_new_url(new_url_requests_array) {
@@ -287,15 +301,10 @@ class Chapters_filters {
     this.indices_clicked_chapters = [this.index_clicked_chapter];
 
     if (storage_indices_clicked_chapters !== null) {
-      storage_indices_clicked_chapters =
-        storage_indices_clicked_chapters.flatMap((subArr) => subArr); //open subArr
-
-      this.indices_clicked_chapters.push(storage_indices_clicked_chapters);
-      this.indices_clicked_chapters = this.indices_clicked_chapters.flatMap(
-        (subArr) => subArr
-      );
-
-      this.add_color(
+      storage_indices_clicked_chapters = 
+        this.add_previous_indices_clicked_chapters(storage_indices_clicked_chapters);
+      
+      this.set_colors(
         storage_indices_clicked_chapters
       );
     }
@@ -306,53 +315,76 @@ class Chapters_filters {
     );
   }
 
-  add_color(storage_indices_clicked_chapters) {
-    if (
-      storage_indices_clicked_chapters.indexOf(this.index_clicked_chapter) == -1 // clicked_index_not_repeated
-    ) {
-      const all_chapters_indexes = [0, 1, 2, 3];
-      this.indices_clicked_chapters = all_chapters_indexes.slice(
-        Math.min(...this.indices_clicked_chapters),
-        Math.max(...this.indices_clicked_chapters) + 1
-      );
-    } else {
-      this.remove_color();
-    }
+  add_previous_indices_clicked_chapters(storage_indices_clicked_chapters) {
+    storage_indices_clicked_chapters =
+      storage_indices_clicked_chapters.flatMap((subArr) => subArr);
+
+    this.indices_clicked_chapters.push(storage_indices_clicked_chapters);
+    this.indices_clicked_chapters = this.indices_clicked_chapters.flatMap(
+      (subArr) => subArr
+    );
+
+    return storage_indices_clicked_chapters;
   }
 
-  remove_color() {
-    this.indices_clicked_chapters.shift();
-
-    if (
-      this.index_clicked_chapter == this.first_index_chapters_spans ||
-      this.index_clicked_chapter == this.last_index_chapters_spans ||
-      (!this.indices_clicked_chapters.includes(
-        this.first_index_chapters_spans
-      ) &&
-        !this.indices_clicked_chapters.includes(this.last_index_chapters_spans))
-    ) {
-      this.indices_clicked_chapters = this.indices_clicked_chapters.filter(
-        (item) => item !== this.index_clicked_chapter
-      );
-    } else {
-      this.remove_color_in_one();
-    }
+  set_colors(storage_indices_clicked_chapters) {
+    const is_clicked_new_chapters = storage_indices_clicked_chapters.indexOf(this.index_clicked_chapter) == -1;
+    
+    if (is_clicked_new_chapters)
+      this.add_colors();
+    else 
+      this.remove_colors();
   }
 
-  remove_color_in_one() {
-    if (
-      this.indices_clicked_chapters.indexOf(this.first_index_chapters_spans) ==
-      -1
-    ) {
-      this.indices_clicked_chapters = this.indices_clicked_chapters.slice(
-        this.indices_clicked_chapters.indexOf(this.index_clicked_chapter) + 1,
-        Math.max(...this.indices_clicked_chapters)
-      );
-    } else {
-      this.indices_clicked_chapters = this.indices_clicked_chapters.slice(
-        Math.min(...this.indices_clicked_chapters),
-        this.index_clicked_chapter
-      );
-    }
+  add_colors() {
+    const all_chapters_indexes = [0, 1, 2, 3];
+
+    this.indices_clicked_chapters = all_chapters_indexes.slice(
+      Math.min(...this.indices_clicked_chapters),
+      Math.max(...this.indices_clicked_chapters) + 1
+    );
+  }
+
+  remove_colors() {
+    const indices_clicked_chapters_without_duplicate = this.indices_clicked_chapters.shift();
+    const is_clicked_first_or_last_chapters = this.index_clicked_chapter == this.first_index_chapters_spans ||
+      this.index_clicked_chapter == this.last_index_chapters_spans;
+
+    const is_activated_second_and_third_chapters = (!this.indices_clicked_chapters.includes(this.first_index_chapters_spans) &&
+      !this.indices_clicked_chapters.includes(this.last_index_chapters_spans));
+
+    if (is_clicked_first_or_last_chapters || is_activated_second_and_third_chapters)
+      this.remove_one_color();
+    else 
+      this.remove_multiple_colors();
+  }
+
+  remove_one_color() {
+    this.indices_clicked_chapters = this.indices_clicked_chapters.filter(
+      (item) => item !== this.index_clicked_chapter
+    );
+  }
+
+  remove_multiple_colors() {
+    const is_not_activated_first_chapter = this.indices_clicked_chapters.indexOf(this.first_index_chapters_spans) == -1;
+
+    if (is_not_activated_first_chapter)
+      this.remove_colors_from_left_to_right()
+    else
+      this.remove_colors_from_right_to_left()
+  }
+
+  remove_colors_from_left_to_right() {
+    this.indices_clicked_chapters = this.indices_clicked_chapters.slice(
+      this.indices_clicked_chapters.indexOf(this.index_clicked_chapter) + 1,
+      Math.max(...this.indices_clicked_chapters)
+    );
+  }
+
+  remove_colors_from_right_to_left() {
+    this.indices_clicked_chapters = this.indices_clicked_chapters.slice(
+      Math.min(...this.indices_clicked_chapters),
+      this.index_clicked_chapter
+    );
   }
 }
