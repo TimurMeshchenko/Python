@@ -1,11 +1,10 @@
-from typing import Any
-from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.views import generic
-from .models import Title, Categories, Genres
 from django.db.models import Q
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from .models import *
+from .forms import UserCreationForm
 import json
 
 class CatalogView(generic.ListView):
@@ -116,3 +115,54 @@ class SearchView(generic.ListView):
         context["json_data"] = json.dumps(list(Title.objects.values())).replace('\'', '\\\'')
         return context
     
+class SignupView(generic.View):
+    template_name = 'signup.html'
+
+    def get(self, request):
+        if self.request.user.is_authenticated:
+            return redirect('/')
+        
+        context = { 'form': UserCreationForm() }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/')
+        context = { 'form': form }
+        return render(request, self.template_name, context)
+
+class SigninView(generic.ListView):
+    template_name = "signin.html"
+    
+    def get(self, request):
+        if self.request.user.is_authenticated:
+            return redirect('/')
+        
+        context = { 'form': AuthenticationForm() }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = AuthenticationForm(request, data=request.POST)
+        
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+
+        return render(request, self.template_name, {'form': form })
+
+class LogutView(generic.ListView):
+    def get(self, request):
+        logout(request)
+        return redirect('/')

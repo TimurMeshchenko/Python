@@ -59,6 +59,8 @@ class Drop_menu_filters {
   }
 
   determine_location_click(event) {
+    if (["svg", "path"].includes(event.target.tagName)) return;
+
     const parent_clicked_element = this.get_parent_clicked_element(event.target)
     const parent_div = [...document.querySelectorAll(".jsx-d338f3d1a4c6e9b5")];
     const current_index_clicked_element = parent_div.indexOf(
