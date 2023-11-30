@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Genres(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -41,3 +42,7 @@ class Title(models.Model):
 
     def __str__(self):
         return self.rus_name
+
+class Bookmarks(models.Model):
+    users = models.ManyToManyField(User)
+    titles = models.ManyToManyField(Title)
