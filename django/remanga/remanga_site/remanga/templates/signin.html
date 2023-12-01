@@ -1,48 +1,21 @@
 {% extends "catalog.html" %}
 {% load static %}
+  
+{% block title %}
+  <title>Вход</title>
+{% endblock %}
 
-<!DOCTYPE html>
-<html lang="ru" dir="ltr" data-theme="dark" style="color-scheme: dark">
-
-{% block head %}
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="application-name" content="ReManga" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image:width" content="186" />
-  <meta property="og:image:height" content="270" />
-  <meta property="og:locale" content="ru_RU" />
-  <meta property="keywords"
-    content="читать мангу, читать мангу онлайн на русском, читать манхву, читать манхву онлайн на русском, читать маньхуа, читать маньхуа онлайн на русском" />
-  <title>Поиск - ReManga</title>
-  <meta name="robots" content="noindex,follow" />
-  <meta name="googlebot" content="noindex,follow" />
-  <meta name="description" content="Поиск по сайту" />
-  <meta property="og:title" content="Поиск - ReManga" />
-  <meta property="og:description" content="Поиск по сайту" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="next-head-count" content="22" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#000" />
-  <link rel="preload" href="{% static 'search/4a7d5f9251fa28dc.css' %}" as="style" />
-  <link rel="stylesheet" href="{% static 'search/4a7d5f9251fa28dc.css' %}" data-n-g="" />
-  <link rel="preload" href="{% static 'search/0c734abce1a29008.css' %}" as="style" />
-  <link rel="stylesheet" href="{% static 'search/0c734abce1a29008.css' %}" data-n-p="" />
-  <link rel="preload" href="{% static 'search/ab24ef225a3ac5d5.css' %}" as="style" />
-  <link rel="stylesheet" href="{% static 'search/ab24ef225a3ac5d5.css' %}" data-n-p="" />
-  <link rel="preload" href="{% static 'signup/cb4f8de50573f9d5.css' %}" as="style" />
-  <link rel="stylesheet" href="{% static 'signup/cb4f8de50573f9d5.css' %}" data-n-g="" />
-  <link rel="stylesheet" type="text/css" href="{% static 'signup/843ea9ec36d246ae.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'signup/920c959cc716ad46.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'signup/029ac71e4e31b456.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'signup/09e4f43c14f4840f.css' %}" />
-  <link rel="stylesheet" type="text/css" href="{% static 'signup/9dd15375466b1de0.css' %}" />
+{% block css %}
+  <link rel="preload" href="{% static 'signin/cb4f8de50573f9d5.css' %}" as="style" />
+  <link rel="stylesheet" href="{% static 'signin/cb4f8de50573f9d5.css' %}" data-n-g="" />
+  <link rel="stylesheet" type="text/css" href="{% static 'signin/843ea9ec36d246ae.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'signin/920c959cc716ad46.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'signin/029ac71e4e31b456.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'signin/09e4f43c14f4840f.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'signin/9dd15375466b1de0.css' %}" />
+{% endblock %}
+  
+{% block styles %}
   <style>
     .form.jsx-2964599226bcbb16>button {
       margin: 8px 0 8px;
@@ -123,27 +96,11 @@
 
     .after_form {
       margin-right: 15px;
-    }
-
-    .flexAuto.jsx-2a8f39a92d173359 {
-        -webkit-box-flex: 1;
-        -webkit-flex-grow: 1;
-        -moz-box-flex: 1;
-        -ms-flex-positive: 1;
-        flex-grow: 1;
-        max-width: 50%;
-        -webkit-flex-basis: 0;
-        -ms-flex-preferred-size: 0;
-        flex-basis: 0;
-    }    
+    }   
   </style>
-</head>
-
 {% endblock %}
 
-<body>
-
-  {% block body %}
+{% block body %}
 
   <div
     class="Dialog_paper__JNmkA Dialog_paperWidth-xs__LpPEM Dialog_paper-scroll-paper__3WvVF rounded"
@@ -189,7 +146,4 @@
     </p>
   </div>
   </div>
-  {% endblock %}
-</body>
-
-</html>
+{% endblock %}

@@ -99,10 +99,38 @@ class CatalogView(generic.ListView):
 class TitleView(generic.ListView):
     template_name = "title.html"
     context_object_name = "title"
-    
+
     def get_queryset(self):
         title_id = self.kwargs.get('dir_name')
         return Title.objects.get(dir_name=title_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        dir_name = self.kwargs.get('dir_name')  
+        title_id = Title.objects.get(dir_name=dir_name).id
+        is_bookmark_added = self.request.user.titles.filter(id=title_id).exists()
+
+        context['is_bookmark_added'] = is_bookmark_added
+
+        return context 
+
+    def post(self, request, **kwargs):   
+        dir_name = self.kwargs.get('dir_name')  
+        title_id = Title.objects.get(dir_name=dir_name).id
+        title = Title.objects.get(id=title_id)
+        is_bookmark_added = self.request.user.titles.filter(id=title_id).exists()
+
+        if is_bookmark_added: 
+            self.request.user.titles.remove(title_id)
+            title.count_bookmarks -= 1
+        else: 
+            self.request.user.titles.add(Title.objects.get(id=title_id))
+            title.count_bookmarks += 1
+
+        title.save()
+        
+        return redirect(request.path)
 
 class SearchView(generic.ListView):
     template_name = "search.html"
@@ -188,3 +216,9 @@ class PasswordView(generic.ListView):
         
         return render(request, self.template_name, {'form': form})
     
+class BookmarksView(generic.ListView):
+    template_name = "bookmarks.html"
+    context_object_name = "titles"
+
+    def get_queryset(self):
+        return self.request.user.titles.all()

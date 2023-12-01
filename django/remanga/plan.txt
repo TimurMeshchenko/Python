@@ -1,31 +1,45 @@
 Пароль у акков fsafsafzcx
 
-1. закладки
+1. Голосы
 
-Добавить к пользователю аттрибут закладок.
-В закладках получать user и выводить все его тайлты
+Удалить total_views total_votes
+Сбросить (удалить и вернуть) avg_rating count_rating count_bookmarks
 
-Создать модель int user id ManyToManyField(Title) 
-Title.objects.get(dir_name="{self.dir_name}").chapters.add(Chapters.objects.get_or_create(chapter="{chapter}", tome={tome})[0])
-f'Bookmarks.objects.get_or_create(users=user).titles.add(Title.objects.get(dir_name="{dir_name}")) dir_name можно получить из url
+Сделать окно при клике на рейтинг form post 
 
-Сделать модель закладок id будет как у user id 
-ManyToManyField(Title) (чтобы загружать добавленные тайтлы) 
+Создать модель Rating, где у каждого пользователя будет своя оценка User и int
+добавить ManyToManyField(Rating) к title 
 
-Добавить в закладки. post в таблицу bookmarks созд запись пользователь id тайтла
-Удалять закладки
+Как отличать несколько post form
 
-2. Лайки и т.д
+При добавлении голоса прибавляю к count_rating и перерасчитываю avg_rating, avg(всех оценок)
+title_id = self.kwargs.get('dir_name')
+title = Title.objects.get(dir_name=title_id)
+title.count_rating += 1
+title.avg_rating = avg(Title.objects.all().avg_rating) // узнать как рассчитать среднюю оценку 
+title.save()
 
-при нажатии отправляется post запрос который +1 лайк в бд для этого тайтла 
-сохраняю user id который поставил, если еще раз нажимает -1 и удаляю из лайков user id
+Если уже проголосовал то удаляю из count_rating и перерасчитываю avg_rating
+title.count_rating -= 1
+
+Подсвечивать текущую оценку
+
+2. Добавить аву для user модели avatar ImageField
+Сохранять в images\users_avatars
+Доделать template password чтобы можно было менять аву
+Выбираю аву с пк
 
 3. Комментарии
 
-post в модель комментарии с textfield для каждого тайтла
+модель Comment user textfield
+title добавить ManyToManyField(Comment) 
+
+комментарии добавлять через form post
 
 4. Добавить 10 страниц в каталоге
 спарсить добавить url для страниц
+
+--------------------------------------------------------------------------------
 
 fastapi + redis + restapi asyncio, закинуть в docker, 
 изучить команды mongodb PostgreSQL

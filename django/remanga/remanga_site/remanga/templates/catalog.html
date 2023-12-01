@@ -2,26 +2,10 @@
 
 <!DOCTYPE html>
 <html lang="ru" dir="ltr" data-theme="dark" style="color-scheme: dark" class=" ">
-{% block head %}
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width" />
-  <script>
-    !(function () {
-      try {
-        var d = document.documentElement;
-        var e = localStorage.getItem("mtheme");
-        if ("system" === e || (!e && true)) {
-          var t = "(prefers-color-scheme: dark)",
-            m = window.matchMedia(t);
-          m.media !== t || m.matches
-            ? d.setAttribute("data-theme", "dark")
-            : d.setAttribute("data-theme", "light");
-        } else if (e) d.setAttribute("data-theme", e);
-      } catch (e) { }
-    })();
-  </script>
   <meta name="application-name" content="ReManga" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -33,7 +17,11 @@
   <meta property="og:locale" content="ru_RU" />
   <meta property="keywords"
     content="читать мангу, читать мангу онлайн на русском, читать манхву, читать манхву онлайн на русском, читать маньхуа, читать маньхуа онлайн на русском" />
+
+  {% block title %}
   <title>Каталог манги онлайн на русском - ReManga</title>
+  {% endblock %}
+
   <meta name="robots" content="index,follow" />
   <meta name="googlebot" content="index,follow" />
   <meta name="description"
@@ -45,26 +33,20 @@
   <meta name="next-head-count" content="22" />
   <meta name="msapplication-TileColor" content="#da532c" />
   <meta name="theme-color" content="#000" />
-  <script>
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != "dataLayer" ? "&l=" + l : "";
-      j.async = true;
-      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, "script", "dataLayer", "G-81J4Q19D6Y");
-  </script>
+
   <link rel="preload" href="{% static 'catalog/css/4a7d5f9251fa28dc.css' %}" as="style" />
   <link rel="stylesheet" href="{% static 'catalog/css/4a7d5f9251fa28dc.css' %}" data-n-g="" />
   <link rel="preload" href="{% static 'catalog/css/0c734abce1a29008.css' %}" as="style" />
   <link rel="stylesheet" href="{% static 'catalog/css/0c734abce1a29008.css' %}" data-n-p="" />
+  <link rel="stylesheet" type="text/css" href="{% static 'catalog/css/a87e1eafaffb2fdc.css' %}" />
+  
+  {% block css %}
   <link rel="preload" href="{% static 'catalog/css/9eb715df965d6cf8.css' %}" as="style" />
   <link rel="stylesheet" href="{% static 'catalog/css/9eb715df965d6cf8.css' %}" data-n-p="" />
+  {% endblock %}
+
   <noscript data-n-css=""></noscript>
-  <style id="__jsx-2a8f39a92d173359">
+  <style>
     .flexAuto.jsx-2a8f39a92d173359 {
       -webkit-box-flex: 1;
       -webkit-flex-grow: 1;
@@ -76,7 +58,11 @@
       -ms-flex-preferred-size: 0;
       flex-basis: 0;
     }
+  </style>
 
+  {% block styles %}
+
+  <style id="__jsx-2a8f39a92d173359">
     .mwFull.jsx-2a8f39a92d173359 {
       max-width: 100%;
     }
@@ -509,7 +495,6 @@
       font-family: "__Exo_2_cfc288", "__Exo_2_Fallback_cfc288";
     }
   </style>
-  <link rel="stylesheet" type="text/css" href="{% static 'catalog/css/a87e1eafaffb2fdc.css' %}" />
   <style type="text/css" data-styled-jsx="">
     div.jsx-88620ec3676b2b4a {
       margin-left: 8px;
@@ -669,8 +654,9 @@
       transition-duration: .3s;
     }
   </style>
+  {% endblock %}
+
 </head>
-{% endblock %}
 
 <body>
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=G-81J4Q19D6Y" height="0" width="0"
@@ -705,7 +691,7 @@
         <div class="hidden-xsDown Header_navContainer__3fCGy">
           {% if user.is_authenticated %}
           <a class="Button_button__JOS9_ Header_headerLink__EvjUK hidden-mdDown" tabindex="0" role="button"
-            href="{% url 'remanga:signup' %}">Закладки
+            href="{% url 'remanga:bookmarks' %}">Закладки
           </a>
           {% else %}
           <a class="Button_button__JOS9_ Header_headerLink__EvjUK hidden-mdDown" tabindex="0" role="button"
@@ -961,7 +947,8 @@
   </script>
 
 
-  {% endblock %} {% block body %}
+  {% endblock %} 
+  {% block body %}
   <div id="__next">
     <main class="jsx-b26231077db42c90 jsx-1886084869">
       <div class="jsx-1025e0387f6b8ad7 slim">

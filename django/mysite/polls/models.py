@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib import admin
-
+# from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 import datetime
 
 class Question(models.Model):
