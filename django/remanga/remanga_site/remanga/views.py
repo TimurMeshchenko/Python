@@ -98,39 +98,80 @@ class CatalogView(generic.ListView):
 
 class TitleView(generic.ListView):
     template_name = "title.html"
-    context_object_name = "title"
 
     def get_queryset(self):
-        title_id = self.kwargs.get('dir_name')
-        return Title.objects.get(dir_name=title_id)
+        return
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         dir_name = self.kwargs.get('dir_name')  
-        title_id = Title.objects.get(dir_name=dir_name).id
-        is_bookmark_added = self.request.user.titles.filter(id=title_id).exists()
+        title = Title.objects.get(dir_name=dir_name)
+        
+        context['title'] = title
+
+        if not self.request.user.is_authenticated: return context
+
+        is_bookmark_added = self.request.user.titles.filter(id=title.id).exists()
+        title_rating = self.request.user.ratings.filter(title_id=title.id)
 
         context['is_bookmark_added'] = is_bookmark_added
+        context['title_rating'] = title_rating[0].rating if title_rating.exists() else None
 
         return context 
 
     def post(self, request, **kwargs):   
-        dir_name = self.kwargs.get('dir_name')  
-        title_id = Title.objects.get(dir_name=dir_name).id
-        title = Title.objects.get(id=title_id)
-        is_bookmark_added = self.request.user.titles.filter(id=title_id).exists()
+        if not self.request.user.is_authenticated: return redirect("remanga:signin")
 
-        if is_bookmark_added: 
-            self.request.user.titles.remove(title_id)
-            title.count_bookmarks -= 1
-        else: 
-            self.request.user.titles.add(Title.objects.get(id=title_id))
-            title.count_bookmarks += 1
+        dir_name = self.kwargs.get('dir_name')  
+        title = Title.objects.get(dir_name=dir_name)
+        form_name = request.POST['form_name']
+
+        if (form_name == 'bookmark'):
+            self.change_bookmark(title)
+        elif ('rating' in form_name):
+            self.change_rating(title, form_name)
 
         title.save()
         
         return redirect(request.path)
+    
+    def change_bookmark(self, title):
+        is_bookmark_added = self.request.user.titles.filter(id=title.id).exists()
+
+        if is_bookmark_added: 
+            self.request.user.titles.remove(title.id)
+            title.count_bookmarks -= 1
+        else: 
+            self.request.user.titles.add(title)
+            title.count_bookmarks += 1
+
+    def change_rating(self, title, form_name):
+        rating_str = [letter for letter in form_name if letter.isdigit()]
+        rating = int("".join(rating_str)) 
+        
+        is_same_title_rating_exists = self.request.user.ratings.filter(title_id=title.id, rating=rating).exists()
+
+        self.remove_rating(title)
+        self.add_rating(title, rating, is_same_title_rating_exists)
+
+    def remove_rating(self, title):
+        title_rating = self.request.user.ratings.filter(title_id=title.id)
+        
+        if not title_rating.exists(): return
+
+        count_rating_except_current = title.count_rating - 1 if title.count_rating > 1 else 1
+        title.avg_rating = (title.avg_rating * title.count_rating - title_rating[0].rating) / count_rating_except_current
+        title.count_rating -= 1
+
+        self.request.user.ratings.remove(title_rating[0])
+
+    def add_rating(self, title, rating, is_same_title_rating_exists):
+        if (is_same_title_rating_exists): return
+
+        rating_object, is_created = Rating.objects.get_or_create(title_id=title.id, rating=rating)
+        title.avg_rating = (title.avg_rating * title.count_rating + rating) / (title.count_rating + 1)
+        title.count_rating += 1
+        self.request.user.ratings.add(rating_object)
 
 class SearchView(generic.ListView):
     template_name = "search.html"
@@ -215,10 +256,17 @@ class PasswordView(generic.ListView):
             return redirect('/')
         
         return render(request, self.template_name, {'form': form})
-    
+
 class BookmarksView(generic.ListView):
     template_name = "bookmarks.html"
     context_object_name = "titles"
 
     def get_queryset(self):
         return self.request.user.titles.all()
+        
+    
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('/')
+        
+        return super().get(request, *args, **kwargs)
