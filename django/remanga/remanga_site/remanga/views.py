@@ -3,9 +3,13 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.conf import settings
+
 from .models import *
 from .forms import UserCreationForm
+
 import json
+import os
 
 class CatalogView(generic.ListView):
     template_name = "catalog.html"
@@ -105,6 +109,7 @@ class TitleView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dir_name = self.kwargs.get('dir_name')  
+
         title = Title.objects.get(dir_name=dir_name)
         
         context['title'] = title
@@ -236,26 +241,52 @@ class LogutView(generic.ListView):
         logout(request)
         return redirect('/')
 
-class PasswordView(generic.ListView):
-    template_name = "password.html"
+class ProfileView(generic.ListView):
+    template_name = "profile.html"
     
-    def get(self, request):
-        if not self.request.user.is_authenticated:
-            return redirect('/')
-        
-        context = { 'form': PasswordChangeForm(request.user) }
-        return render(request, self.template_name, context)
+    def get_queryset(self):
+        return
 
-    def post(self, request):
-        form = PasswordChangeForm(request.user, request.POST)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs.get('user_id')  
+
+        profile = User.objects.filter(id=user_id)[0]
+
+        context['profile'] = profile
+        context['form'] = PasswordChangeForm(self.request.user)
+
+        return context 
+
+    def post(self, request, **kwargs):
+        if ('old_password' in request.POST):
+            return self.change_password(request)
         
+        return self.change_avatar(request)
+    
+    def change_password(self, request):
+        form = PasswordChangeForm(request.user, request.POST)
+            
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
                     
-            return redirect('/')
+            return redirect(request.path)
         
         return render(request, self.template_name, {'form': form})
+
+    def change_avatar(self, request):
+        avatar = request.FILES['avatar']
+        avatar.name = f"{self.request.user.id}.jpg"
+    
+        if (self.request.user.avatar):
+            avatar_path = os.path.join(settings.MEDIA_ROOT, request.user.avatar.name)
+            os.remove(rf'{avatar_path}')
+
+        self.request.user.avatar = avatar
+        self.request.user.save()
+
+        return redirect(request.path)
 
 class BookmarksView(generic.ListView):
     template_name = "bookmarks.html"

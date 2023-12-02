@@ -48,6 +48,7 @@ class Rating(models.Model):
 class User(AbstractUser):
     titles = models.ManyToManyField(Title)
     ratings = models.ManyToManyField(Rating)
+    avatar = models.ImageField(upload_to='users_avatars', null=True, blank=True)
 
     class Meta:
         db_table = 'auth_user'
