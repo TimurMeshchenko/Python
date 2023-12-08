@@ -1,19 +1,18 @@
 Пароль у акков fsafsafzcx
 
-1. Комментарии
+В docker (скач без визуала)
 
-модель Comment user textfield
-title добавить ManyToManyField(Comment) 
+Посмотреть gitflows.
+Перенести в новую директорию в git и прикрепить видео со всем функционалом, залить на yt
+И описание подробное как запустить, пароль логин админа.
 
-комментарии добавлять через form post
-
-2. Добавить 10 страниц в каталоге
-спарсить добавить url для страниц
-
+проверить как restore'ится бд
 --------------------------------------------------------------------------------
 
-fastapi + mongodb? + redis + restapi asyncio, закинуть в docker, 
+fastapi + mongodb? + redis + restapi, asyncio, закинуть в docker, 
 изучить команды mongodb PostgreSQL
 
-from remanga.models import *
+ALTER SEQUENCE remanga_title_categories_id_seq RESTART WITH 46;
+DELETE FROM your_table_name WHERE id = 5;
 
+from remanga.models import *

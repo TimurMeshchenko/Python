@@ -33,7 +33,8 @@
   <meta name="next-head-count" content="22" />
   <meta name="msapplication-TileColor" content="#da532c" />
   <meta name="theme-color" content="#000" />
-
+  
+  <link rel="icon" type="image/x-icon" href='/media/favicon.ico' > 
   <link rel="preload" href="{% static 'catalog/css/4a7d5f9251fa28dc.css' %}" as="style" />
   <link rel="stylesheet" href="{% static 'catalog/css/4a7d5f9251fa28dc.css' %}" data-n-g="" />
   <link rel="preload" href="{% static 'catalog/css/0c734abce1a29008.css' %}" as="style" />
@@ -665,14 +666,6 @@
   <header class="Header_header__dv3q5 ui-fixed">
     <nav class="jsx-2a8f39a92d173359 Header_nav__V78KK">
       <div class="jsx-2a8f39a92d173359 Header_navContainer__3fCGy flexAuto">
-        <a class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb undefined Button_text-size-small__kYaDZ Header_brand__nuOm_"
-          tabindex="0" role="button" type="button" aria-label="Home" href="{% url 'remanga:catalog' %}"><span
-            class="Button_label__py8bK"><svg class="SvgIcon_root__keb_Y SvgIcon_fontSize-large__Xgixi" focusable="false"
-              viewBox="0 0 496 512" aria-hidden="true">
-              <path fill="currentColor"
-                d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 376c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32zm0-128c-53.02 0-96 42.98-96 96s42.98 96 96 96c-106.04 0-192-85.96-192-192S141.96 64 248 64c53.02 0 96 42.98 96 96s-42.98 96-96 96zm0-128c-17.67 0-32 14.33-32 32s14.33 32 32 32 32-14.33 32-32-14.33-32-32-32z">
-              </path>
-            </svg></span></a>
         <div style="max-width: 300px" class="jsx-2a8f39a92d173359 hidden-smDown Header_navContainer__3fCGy ml16">
           <a class="Button_button__JOS9_ Header_headerLink__EvjUK" tabindex="0" role="button"
             href="{% url 'remanga:catalog' %}">Каталог</a>
@@ -712,25 +705,12 @@
           </svg>
           {% endif %}
         </div>
+        <script src="{% static 'catalog/js/user_menu_stylization.js' %}"></script>
         <script>
-          document.addEventListener('click', toggle_user_menu);
-          window.addEventListener('resize', set_transform_translate);
-
-          function toggle_user_menu(event) {
-            const user_menu = document.querySelector(".user_menu");
-            const user_avatar = document.querySelector(".Avatar_avatar__hG0bH");
-
-            if (!user_menu && user_avatar && user_avatar.contains(event.target)) {
-              add_user_menu();
-              set_transform_translate();
-            }
-            else if (user_menu && !user_menu.contains(event.target))
-              document.querySelector(".user_menu").remove();
-          }
-
+          new User_menu_stylization();
           function add_user_menu() {
-            document.querySelector("html").innerHTML += `
-                  <div role="tooltip"
+            document.querySelector("body").insertAdjacentHTML('beforeend', `
+                <div role="tooltip"
                   style="z-index: 1600; position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(-146px, 55px);"
                   data-popper-placement="bottom-end" class="user_menu">
                   <div scale="0.1" direction="up" style="opacity: 1;">
@@ -768,25 +748,7 @@
                     </div>
                     </div>
                   </div>
-                `
-          }
-
-          function set_transform_translate() {
-            const user_menu = document.querySelector(".user_menu");
-
-            if (!user_menu) return;
-
-            const pageWidth = window.innerWidth;
-            let user_menu_translate_width = 0;
-
-            if (pageWidth < 1024)
-              user_menu_translate_width = 0;
-            else if (pageWidth < 1600)
-              user_menu_translate_width = -pageWidth / 10;
-            else
-              user_menu_translate_width = -pageWidth / 72 * 10;;
-
-            user_menu.style.transform = `translate(${user_menu_translate_width}px, 55px)`;
+                `);
           }
         </script>
 
@@ -1043,52 +1005,12 @@
                 }
               </style>
             </div>
-            <div class="Pagination_pagination__u9u9q">
-              <button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-primary__NSm_C Button_disabled__V03Wv"
-                tabindex="0" type="button" style="padding: 5px 6px">
-                <span class="Button_label__py8bK"><svg class="SvgIcon_root__keb_Y" focusable="false" viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                  </svg></span></button><button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_contained__C0zVd Button_contained-primary__ZtvzA Button_contained-size-small__wxdau"
-                tabindex="0" type="button">
-                <span class="Button_label__py8bK">1</span></button><button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-primary__NSm_C hidden-xs"
-                tabindex="0" type="button">
-                <span class="Button_label__py8bK">2</span></button><button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-primary__NSm_C Button_disabled__V03Wv hidden-xs"
-                tabindex="0" type="button">
-                <span class="Button_label__py8bK">...</span></button><button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-primary__NSm_C hidden-xs"
-                tabindex="0" type="button">
-                <span class="Button_label__py8bK">715</span></button><button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb Button_text-primary__NSm_C"
-                tabindex="0" type="button" style="padding: 6px">
-                <span class="Button_label__py8bK"><svg class="SvgIcon_root__keb_Y" focusable="false" viewBox="0 0 24 24"
-                    aria-hidden="true">
-                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                  </svg></span>
-              </button>
-            </div>
-            <!--/$-->
           </div>
           <div class="Catalog_aside__vQ_6h">
             <div class="flex items-center justify-between mb8">
               <h4 class="Typography_h6__crs2H" style="margin-bottom: 6px">
                 Фильтры
               </h4>
-              <button
-                class="Button_button__JOS9_ Button_button__JOS9_ Button_text__LI0qb undefined Button_text-size-small__kYaDZ"
-                tabindex="0" type="button">
-                <span class="Button_label__py8bK">Очистить<span
-                    class="Button_endIcon__n8Bpv Button_icon-size-small__1M4_d"><svg class="SvgIcon_root__keb_Y"
-                      focusable="false" viewBox="0 0 24 24" aria-hidden="true">
-                      <path
-                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                      </path>
-                    </svg></span></span>
-              </button>
             </div>
             <div class="Catalog_filters__Udj_N">
               <div>
@@ -1231,14 +1153,6 @@
                 </div>
               </div>
             </div>
-            <div class="Catalog_filters__Udj_N">
-              <label class="jsx-cfb46a4c8e49b3b2 formControlLabel"><span class="Switch_root__BXT8Y"><span
-                    class="SwitchBase_root__Gf1Ig Switch_switchBase__2x6b4 Switch_color-primary__5S_EB"><span
-                      class="SwitchBase_label__B5UP7"><input class="SwitchBase_input__bhqbg Switch_input__mXZbr"
-                        type="checkbox" value="" /><span class="Switch_thumb__U3ith"></span></span></span><span
-                    class="Switch_track__HfEr_"></span></span><span
-                  class="Typography_body1__TZSwE Typography_color-textSecondary__gCJWS">Автоподгрузка</span></label>
-            </div>
           </div>
         </div>
       </div>
@@ -1264,7 +1178,10 @@
   <script src="{% static 'catalog/js/filters/drop_menu_filters/drop_menu_stylization.js' %}"></script>
   <script src="{% static 'catalog/js/filters/input_range_filters/input_range_filters.js' %}"></script>
   <script src="{% static 'catalog/js/filters/chapters_filters/chapters_filters.js' %}"></script>
-
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'catalog/js/endless_scroll.js' %}"></script>
+  
   <script>
     let data_array = [
       "{{ types_data | escapejs }}",
@@ -1273,6 +1190,10 @@
     ]
 
     new Filters().main(data_array)
+  </script>
+
+  <script>
+    new Endless_scroll("{{ num_pages }}");
   </script>
 
   <next-route-announcer>

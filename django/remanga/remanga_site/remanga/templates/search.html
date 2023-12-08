@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  <title>Поиск - ReManga</title>
+  <title>Поиск</title>
 {% endblock %}
 
 {% block css %}
@@ -322,18 +322,13 @@
           <div class="Tabs_flexContainer__Zbnn6" role="tab-list">
             <button class="Button_button__JOS9_ Tab_root__aAqqc Tab_textColor-primary__1ucBX Tab_selected__952d4"
               tabindex="0" type="button" role="tab" aria-selected="true">
-              <span class="wrapper">Тайтлы</span></button><button
-              class="Button_button__JOS9_ Tab_root__aAqqc Tab_textColor-primary__1ucBX" tabindex="-1" type="button"
-              role="tab" aria-selected="false">
-              <span class="wrapper">Команды</span>
-            </button>
+              <span class="wrapper">Тайтлы</span></button>
           </div>
           <span class="jsx-f8919b3175e5971e root Tabs_indicator__XEjFI" style="left: 0px; width: 77.0938px">
             <div class="jsx-f8919b3175e5971e inner color-primary"></div>
           </span>
         </div>
       </div>
-      <!--$--><!--/$-->
       <div class="Search_container__R4TRt Search_content__rRts_">
         <div class="grid">
           <div class="gridPlaceholder"></div>
@@ -396,17 +391,6 @@
   <footer class="Footer_footer__aYlrA">
   </footer>
 </div>
-<noscript>
-  <div>
-    <img src="https://mc.yandex.ru/watch/43900324" style="position: absolute; left: -9999px" alt="" />
-  </div>
-</noscript>
-<script>
-  <!-- -->
-</script>
-<script>
-  window.yaContextCb = window.yaContextCb || [];
-</script>
 <script>
   const json_data = "{{ json_data | escapejs }}";
   const data = JSON.parse(json_data);
@@ -462,18 +446,4 @@
     }
   });
 </script>
-<next-route-announcer>
-  <p aria-live="assertive" id="__next-route-announcer__" role="alert" style="
-          border: 0px;
-          clip: rect(0px, 0px, 0px, 0px);
-          height: 1px;
-          margin: -1px;
-          overflow: hidden;
-          padding: 0px;
-          position: absolute;
-          width: 1px;
-          white-space: nowrap;
-          overflow-wrap: normal;
-        "></p>
-</next-route-announcer>
 {% endblock %}
